@@ -131,7 +131,7 @@ pro RenderExampleMW, MODelfile=modelfile, EBTELfile=ebtelfile, LIBname=libname, 
  catch, err
  if err eq 0 then begin
   wcs_conv_hg_hpc, double(model.lonC), double(model.latC), xc_auto, yc_auto, $
-                  dsun_obs=double(model.DSun), b0_angle=double(model.b0Sun), l0_angle=0d, /arcseconds
+                  dsun_obs=double(model.DSun/100), b0_angle=double(model.b0Sun), l0_angle=0d, /arcseconds
   catch, /cancel
  endif else begin
   catch, /cancel
