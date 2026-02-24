@@ -1,0 +1,441 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>gximagecomputing.sdk &mdash; pyGXrender / gximagecomputing 0.0.2.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=7d2f95e5"></script>
+      <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            pyGXrender / gximagecomputing
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../quickstart.html">Quick Start</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../examples.html">Examples Layout</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sdk_api.html">SDK API (Programmatic Rendering)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../cli_api.html">CLI Workflow Modules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../viewer_api.html">Rendered Map Viewer API</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">pyGXrender / gximagecomputing</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">gximagecomputing.sdk</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for gximagecomputing.sdk</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span><span class="w"> </span><span class="nn">__future__</span><span class="w"> </span><span class="kn">import</span> <span class="n">annotations</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">argparse</span><span class="w"> </span><span class="kn">import</span> <span class="n">Namespace</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">dataclasses</span><span class="w"> </span><span class="kn">import</span> <span class="n">dataclass</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Literal</span><span class="p">,</span> <span class="n">Sequence</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">.workflows</span><span class="w"> </span><span class="kn">import</span> <span class="n">render_euv</span> <span class="k">as</span> <span class="n">_render_euv_workflow</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.workflows</span><span class="w"> </span><span class="kn">import</span> <span class="n">render_mw</span> <span class="k">as</span> <span class="n">_render_mw_workflow</span>
+
+
+<div class="viewcode-block" id="ObserverOverrides">
+<a class="viewcode-back" href="../../sdk_api.html#gximagecomputing.sdk.ObserverOverrides">[docs]</a>
+<span class="nd">@dataclass</span><span class="p">(</span><span class="n">slots</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">ObserverOverrides</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Optional observer metadata overrides applied before rendering.&quot;&quot;&quot;</span>
+
+    <span class="n">dsun_cm</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">lonc_deg</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">b0sun_deg</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span></div>
+
+
+
+<div class="viewcode-block" id="MapGeometry">
+<a class="viewcode-back" href="../../sdk_api.html#gximagecomputing.sdk.MapGeometry">[docs]</a>
+<span class="nd">@dataclass</span><span class="p">(</span><span class="n">slots</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">MapGeometry</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Optional output map geometry controls.&quot;&quot;&quot;</span>
+
+    <span class="n">xc</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">yc</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">dx</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">dy</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">pixel_scale_arcsec</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">nx</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">ny</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">xrange</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">yrange</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span></div>
+
+
+
+<div class="viewcode-block" id="MWRenderOptions">
+<a class="viewcode-back" href="../../sdk_api.html#gximagecomputing.sdk.MWRenderOptions">[docs]</a>
+<span class="nd">@dataclass</span><span class="p">(</span><span class="n">slots</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">MWRenderOptions</span><span class="p">:</span>
+    <span class="n">model_path</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">Path</span>
+    <span class="n">model_format</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;h5&quot;</span><span class="p">,</span> <span class="s2">&quot;sav&quot;</span><span class="p">,</span> <span class="s2">&quot;auto&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;auto&quot;</span>
+    <span class="n">ebtel_path</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">output_dir</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">Path</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">output_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">output_format</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;h5&quot;</span><span class="p">,</span> <span class="s2">&quot;fits&quot;</span><span class="p">,</span> <span class="s2">&quot;both&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;h5&quot;</span>
+    <span class="n">omp_threads</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">8</span>
+    <span class="n">geometry</span><span class="p">:</span> <span class="n">MapGeometry</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">observer</span><span class="p">:</span> <span class="n">ObserverOverrides</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">save_outputs</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span>
+    <span class="n">write_preview</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span>
+    <span class="n">verbose</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span></div>
+
+
+
+<div class="viewcode-block" id="EUVRenderOptions">
+<a class="viewcode-back" href="../../sdk_api.html#gximagecomputing.sdk.EUVRenderOptions">[docs]</a>
+<span class="nd">@dataclass</span><span class="p">(</span><span class="n">slots</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">EUVRenderOptions</span><span class="p">:</span>
+    <span class="n">model_path</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">Path</span>
+    <span class="n">model_format</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;h5&quot;</span><span class="p">,</span> <span class="s2">&quot;sav&quot;</span><span class="p">,</span> <span class="s2">&quot;auto&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;auto&quot;</span>
+    <span class="n">ebtel_path</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">output_dir</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">Path</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">output_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">channels</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">instrument</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;AIA&quot;</span>
+    <span class="n">response_sav</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">Path</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">omp_threads</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">8</span>
+    <span class="n">geometry</span><span class="p">:</span> <span class="n">MapGeometry</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">observer</span><span class="p">:</span> <span class="n">ObserverOverrides</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">save_outputs</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span>
+    <span class="n">write_preview</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span>
+    <span class="n">verbose</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span></div>
+
+
+
+<div class="viewcode-block" id="RenderGeometryInfo">
+<a class="viewcode-back" href="../../sdk_api.html#gximagecomputing.sdk.RenderGeometryInfo">[docs]</a>
+<span class="nd">@dataclass</span><span class="p">(</span><span class="n">slots</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">RenderGeometryInfo</span><span class="p">:</span>
+    <span class="n">xc_arcsec</span><span class="p">:</span> <span class="nb">float</span>
+    <span class="n">yc_arcsec</span><span class="p">:</span> <span class="nb">float</span>
+    <span class="n">dx_arcsec</span><span class="p">:</span> <span class="nb">float</span>
+    <span class="n">dy_arcsec</span><span class="p">:</span> <span class="nb">float</span>
+    <span class="n">nx</span><span class="p">:</span> <span class="nb">int</span>
+    <span class="n">ny</span><span class="p">:</span> <span class="nb">int</span>
+    <span class="n">fov_x_arcsec</span><span class="p">:</span> <span class="nb">float</span>
+    <span class="n">fov_y_arcsec</span><span class="p">:</span> <span class="nb">float</span></div>
+
+
+
+<div class="viewcode-block" id="MWOutputFiles">
+<a class="viewcode-back" href="../../sdk_api.html#gximagecomputing.sdk.MWOutputFiles">[docs]</a>
+<span class="nd">@dataclass</span><span class="p">(</span><span class="n">slots</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">MWOutputFiles</span><span class="p">:</span>
+    <span class="n">output_dir</span><span class="p">:</span> <span class="n">Path</span>
+    <span class="n">save_outputs</span><span class="p">:</span> <span class="nb">bool</span>
+    <span class="n">write_preview</span><span class="p">:</span> <span class="nb">bool</span>
+    <span class="n">h5_path</span><span class="p">:</span> <span class="n">Path</span> <span class="o">|</span> <span class="kc">None</span>
+    <span class="n">preview_png</span><span class="p">:</span> <span class="n">Path</span> <span class="o">|</span> <span class="kc">None</span>
+    <span class="n">fits_paths</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Path</span><span class="p">]</span></div>
+
+
+
+<div class="viewcode-block" id="EUVOutputFiles">
+<a class="viewcode-back" href="../../sdk_api.html#gximagecomputing.sdk.EUVOutputFiles">[docs]</a>
+<span class="nd">@dataclass</span><span class="p">(</span><span class="n">slots</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">EUVOutputFiles</span><span class="p">:</span>
+    <span class="n">output_dir</span><span class="p">:</span> <span class="n">Path</span>
+    <span class="n">save_outputs</span><span class="p">:</span> <span class="nb">bool</span>
+    <span class="n">write_preview</span><span class="p">:</span> <span class="nb">bool</span>
+    <span class="n">h5_path</span><span class="p">:</span> <span class="n">Path</span> <span class="o">|</span> <span class="kc">None</span>
+    <span class="n">preview_png</span><span class="p">:</span> <span class="n">Path</span> <span class="o">|</span> <span class="kc">None</span></div>
+
+
+
+<div class="viewcode-block" id="EUVResponseInfo">
+<a class="viewcode-back" href="../../sdk_api.html#gximagecomputing.sdk.EUVResponseInfo">[docs]</a>
+<span class="nd">@dataclass</span><span class="p">(</span><span class="n">slots</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">EUVResponseInfo</span><span class="p">:</span>
+    <span class="n">instrument</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">channels</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span>
+    <span class="n">source</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">mode</span><span class="p">:</span> <span class="nb">str</span></div>
+
+
+
+<div class="viewcode-block" id="MWRenderResult">
+<a class="viewcode-back" href="../../sdk_api.html#gximagecomputing.sdk.MWRenderResult">[docs]</a>
+<span class="nd">@dataclass</span><span class="p">(</span><span class="n">slots</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">MWRenderResult</span><span class="p">:</span>
+    <span class="n">library_path</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">model_path</span><span class="p">:</span> <span class="n">Path</span>
+    <span class="n">model_format</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">ebtel_path</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">observer_overrides_applied</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">]</span>
+    <span class="n">center_source</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">geometry</span><span class="p">:</span> <span class="n">RenderGeometryInfo</span>
+    <span class="n">obs_time_iso</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">freqlist_ghz</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span>
+    <span class="n">ti</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span>
+    <span class="n">tv</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span>
+    <span class="n">outputs</span><span class="p">:</span> <span class="n">MWOutputFiles</span>
+    <span class="n">raw_result</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span></div>
+
+
+
+<div class="viewcode-block" id="EUVRenderResult">
+<a class="viewcode-back" href="../../sdk_api.html#gximagecomputing.sdk.EUVRenderResult">[docs]</a>
+<span class="nd">@dataclass</span><span class="p">(</span><span class="n">slots</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">EUVRenderResult</span><span class="p">:</span>
+    <span class="n">library_path</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">model_path</span><span class="p">:</span> <span class="n">Path</span>
+    <span class="n">model_format</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">ebtel_path</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">observer_overrides_applied</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">]</span>
+    <span class="n">center_source</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">geometry</span><span class="p">:</span> <span class="n">RenderGeometryInfo</span>
+    <span class="n">obs_time_iso</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">response</span><span class="p">:</span> <span class="n">EUVResponseInfo</span>
+    <span class="n">flux_corona</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span>
+    <span class="n">flux_tr</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span>
+    <span class="n">outputs</span><span class="p">:</span> <span class="n">EUVOutputFiles</span>
+    <span class="n">raw_result</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span></div>
+
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_geometry_to_kwargs</span><span class="p">(</span><span class="n">geometry</span><span class="p">:</span> <span class="n">MapGeometry</span> <span class="o">|</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+    <span class="n">g</span> <span class="o">=</span> <span class="n">geometry</span> <span class="ow">or</span> <span class="n">MapGeometry</span><span class="p">()</span>
+    <span class="k">return</span> <span class="p">{</span>
+        <span class="s2">&quot;xc&quot;</span><span class="p">:</span> <span class="n">g</span><span class="o">.</span><span class="n">xc</span><span class="p">,</span>
+        <span class="s2">&quot;yc&quot;</span><span class="p">:</span> <span class="n">g</span><span class="o">.</span><span class="n">yc</span><span class="p">,</span>
+        <span class="s2">&quot;dx&quot;</span><span class="p">:</span> <span class="n">g</span><span class="o">.</span><span class="n">dx</span><span class="p">,</span>
+        <span class="s2">&quot;dy&quot;</span><span class="p">:</span> <span class="n">g</span><span class="o">.</span><span class="n">dy</span><span class="p">,</span>
+        <span class="s2">&quot;pixel_scale_arcsec&quot;</span><span class="p">:</span> <span class="n">g</span><span class="o">.</span><span class="n">pixel_scale_arcsec</span><span class="p">,</span>
+        <span class="s2">&quot;nx&quot;</span><span class="p">:</span> <span class="n">g</span><span class="o">.</span><span class="n">nx</span><span class="p">,</span>
+        <span class="s2">&quot;ny&quot;</span><span class="p">:</span> <span class="n">g</span><span class="o">.</span><span class="n">ny</span><span class="p">,</span>
+        <span class="s2">&quot;xrange&quot;</span><span class="p">:</span> <span class="nb">list</span><span class="p">(</span><span class="n">g</span><span class="o">.</span><span class="n">xrange</span><span class="p">)</span> <span class="k">if</span> <span class="n">g</span><span class="o">.</span><span class="n">xrange</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="s2">&quot;yrange&quot;</span><span class="p">:</span> <span class="nb">list</span><span class="p">(</span><span class="n">g</span><span class="o">.</span><span class="n">yrange</span><span class="p">)</span> <span class="k">if</span> <span class="n">g</span><span class="o">.</span><span class="n">yrange</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">}</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_observer_to_kwargs</span><span class="p">(</span><span class="n">observer</span><span class="p">:</span> <span class="n">ObserverOverrides</span> <span class="o">|</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+    <span class="n">o</span> <span class="o">=</span> <span class="n">observer</span> <span class="ow">or</span> <span class="n">ObserverOverrides</span><span class="p">()</span>
+    <span class="k">return</span> <span class="p">{</span>
+        <span class="s2">&quot;dsun_cm&quot;</span><span class="p">:</span> <span class="n">o</span><span class="o">.</span><span class="n">dsun_cm</span><span class="p">,</span>
+        <span class="s2">&quot;lonc_deg&quot;</span><span class="p">:</span> <span class="n">o</span><span class="o">.</span><span class="n">lonc_deg</span><span class="p">,</span>
+        <span class="s2">&quot;b0sun_deg&quot;</span><span class="p">:</span> <span class="n">o</span><span class="o">.</span><span class="n">b0sun_deg</span><span class="p">,</span>
+    <span class="p">}</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_geometry_from_dict</span><span class="p">(</span><span class="n">d</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">RenderGeometryInfo</span><span class="p">:</span>
+    <span class="k">return</span> <span class="n">RenderGeometryInfo</span><span class="p">(</span>
+        <span class="n">xc_arcsec</span><span class="o">=</span><span class="nb">float</span><span class="p">(</span><span class="n">d</span><span class="p">[</span><span class="s2">&quot;xc_arcsec&quot;</span><span class="p">]),</span>
+        <span class="n">yc_arcsec</span><span class="o">=</span><span class="nb">float</span><span class="p">(</span><span class="n">d</span><span class="p">[</span><span class="s2">&quot;yc_arcsec&quot;</span><span class="p">]),</span>
+        <span class="n">dx_arcsec</span><span class="o">=</span><span class="nb">float</span><span class="p">(</span><span class="n">d</span><span class="p">[</span><span class="s2">&quot;dx_arcsec&quot;</span><span class="p">]),</span>
+        <span class="n">dy_arcsec</span><span class="o">=</span><span class="nb">float</span><span class="p">(</span><span class="n">d</span><span class="p">[</span><span class="s2">&quot;dy_arcsec&quot;</span><span class="p">]),</span>
+        <span class="n">nx</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">d</span><span class="p">[</span><span class="s2">&quot;nx&quot;</span><span class="p">]),</span>
+        <span class="n">ny</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">d</span><span class="p">[</span><span class="s2">&quot;ny&quot;</span><span class="p">]),</span>
+        <span class="n">fov_x_arcsec</span><span class="o">=</span><span class="nb">float</span><span class="p">(</span><span class="n">d</span><span class="p">[</span><span class="s2">&quot;fov_x_arcsec&quot;</span><span class="p">]),</span>
+        <span class="n">fov_y_arcsec</span><span class="o">=</span><span class="nb">float</span><span class="p">(</span><span class="n">d</span><span class="p">[</span><span class="s2">&quot;fov_y_arcsec&quot;</span><span class="p">]),</span>
+    <span class="p">)</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_mw_result_from_workflow</span><span class="p">(</span><span class="n">d</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">MWRenderResult</span><span class="p">:</span>
+    <span class="n">outputs</span> <span class="o">=</span> <span class="n">d</span><span class="p">[</span><span class="s2">&quot;outputs&quot;</span><span class="p">]</span>
+    <span class="n">raw</span> <span class="o">=</span> <span class="n">d</span><span class="p">[</span><span class="s2">&quot;result&quot;</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">MWRenderResult</span><span class="p">(</span>
+        <span class="n">library_path</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">d</span><span class="p">[</span><span class="s2">&quot;library_path&quot;</span><span class="p">]),</span>
+        <span class="n">model_path</span><span class="o">=</span><span class="n">Path</span><span class="p">(</span><span class="n">d</span><span class="p">[</span><span class="s2">&quot;model_path&quot;</span><span class="p">]),</span>
+        <span class="n">model_format</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">d</span><span class="p">[</span><span class="s2">&quot;model_format&quot;</span><span class="p">]),</span>
+        <span class="n">ebtel_path</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">d</span><span class="p">[</span><span class="s2">&quot;ebtel_path&quot;</span><span class="p">]),</span>
+        <span class="n">observer_overrides_applied</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">d</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;observer_overrides_applied&quot;</span><span class="p">,</span> <span class="p">{})),</span>
+        <span class="n">center_source</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">d</span><span class="p">[</span><span class="s2">&quot;center_source&quot;</span><span class="p">]),</span>
+        <span class="n">geometry</span><span class="o">=</span><span class="n">_geometry_from_dict</span><span class="p">(</span><span class="n">d</span><span class="p">[</span><span class="s2">&quot;geometry&quot;</span><span class="p">]),</span>
+        <span class="n">obs_time_iso</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">d</span><span class="p">[</span><span class="s2">&quot;obs_time_iso&quot;</span><span class="p">]),</span>
+        <span class="n">freqlist_ghz</span><span class="o">=</span><span class="p">[</span><span class="nb">float</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">d</span><span class="p">[</span><span class="s2">&quot;freqlist_ghz&quot;</span><span class="p">]],</span>
+        <span class="n">ti</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">raw</span><span class="p">[</span><span class="s2">&quot;TI&quot;</span><span class="p">]),</span>
+        <span class="n">tv</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">raw</span><span class="p">[</span><span class="s2">&quot;TV&quot;</span><span class="p">]),</span>
+        <span class="n">outputs</span><span class="o">=</span><span class="n">MWOutputFiles</span><span class="p">(</span>
+            <span class="n">output_dir</span><span class="o">=</span><span class="n">Path</span><span class="p">(</span><span class="n">outputs</span><span class="p">[</span><span class="s2">&quot;output_dir&quot;</span><span class="p">]),</span>
+            <span class="n">save_outputs</span><span class="o">=</span><span class="nb">bool</span><span class="p">(</span><span class="n">outputs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;save_outputs&quot;</span><span class="p">,</span> <span class="kc">True</span><span class="p">)),</span>
+            <span class="n">write_preview</span><span class="o">=</span><span class="nb">bool</span><span class="p">(</span><span class="n">outputs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;write_preview&quot;</span><span class="p">,</span> <span class="kc">True</span><span class="p">)),</span>
+            <span class="n">h5_path</span><span class="o">=</span><span class="p">(</span><span class="n">Path</span><span class="p">(</span><span class="n">outputs</span><span class="p">[</span><span class="s2">&quot;h5_path&quot;</span><span class="p">])</span> <span class="k">if</span> <span class="n">outputs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;h5_path&quot;</span><span class="p">)</span> <span class="k">else</span> <span class="kc">None</span><span class="p">),</span>
+            <span class="n">preview_png</span><span class="o">=</span><span class="p">(</span><span class="n">Path</span><span class="p">(</span><span class="n">outputs</span><span class="p">[</span><span class="s2">&quot;preview_png&quot;</span><span class="p">])</span> <span class="k">if</span> <span class="n">outputs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;preview_png&quot;</span><span class="p">)</span> <span class="k">else</span> <span class="kc">None</span><span class="p">),</span>
+            <span class="n">fits_paths</span><span class="o">=</span><span class="p">[</span><span class="n">Path</span><span class="p">(</span><span class="n">p</span><span class="p">)</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">outputs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;fits_paths&quot;</span><span class="p">,</span> <span class="p">[])],</span>
+        <span class="p">),</span>
+        <span class="n">raw_result</span><span class="o">=</span><span class="n">raw</span><span class="p">,</span>
+    <span class="p">)</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_euv_result_from_workflow</span><span class="p">(</span><span class="n">d</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">EUVRenderResult</span><span class="p">:</span>
+    <span class="n">outputs</span> <span class="o">=</span> <span class="n">d</span><span class="p">[</span><span class="s2">&quot;outputs&quot;</span><span class="p">]</span>
+    <span class="n">raw</span> <span class="o">=</span> <span class="n">d</span><span class="p">[</span><span class="s2">&quot;result&quot;</span><span class="p">]</span>
+    <span class="n">resp</span> <span class="o">=</span> <span class="n">d</span><span class="p">[</span><span class="s2">&quot;response&quot;</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">EUVRenderResult</span><span class="p">(</span>
+        <span class="n">library_path</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">d</span><span class="p">[</span><span class="s2">&quot;library_path&quot;</span><span class="p">]),</span>
+        <span class="n">model_path</span><span class="o">=</span><span class="n">Path</span><span class="p">(</span><span class="n">d</span><span class="p">[</span><span class="s2">&quot;model_path&quot;</span><span class="p">]),</span>
+        <span class="n">model_format</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">d</span><span class="p">[</span><span class="s2">&quot;model_format&quot;</span><span class="p">]),</span>
+        <span class="n">ebtel_path</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">d</span><span class="p">[</span><span class="s2">&quot;ebtel_path&quot;</span><span class="p">]),</span>
+        <span class="n">observer_overrides_applied</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">d</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;observer_overrides_applied&quot;</span><span class="p">,</span> <span class="p">{})),</span>
+        <span class="n">center_source</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">d</span><span class="p">[</span><span class="s2">&quot;center_source&quot;</span><span class="p">]),</span>
+        <span class="n">geometry</span><span class="o">=</span><span class="n">_geometry_from_dict</span><span class="p">(</span><span class="n">d</span><span class="p">[</span><span class="s2">&quot;geometry&quot;</span><span class="p">]),</span>
+        <span class="n">obs_time_iso</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">d</span><span class="p">[</span><span class="s2">&quot;obs_time_iso&quot;</span><span class="p">]),</span>
+        <span class="n">response</span><span class="o">=</span><span class="n">EUVResponseInfo</span><span class="p">(</span>
+            <span class="n">instrument</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">resp</span><span class="p">[</span><span class="s2">&quot;instrument&quot;</span><span class="p">]),</span>
+            <span class="n">channels</span><span class="o">=</span><span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">c</span><span class="p">)</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">resp</span><span class="p">[</span><span class="s2">&quot;channels&quot;</span><span class="p">]],</span>
+            <span class="n">source</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">resp</span><span class="p">[</span><span class="s2">&quot;source&quot;</span><span class="p">]),</span>
+            <span class="n">mode</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">resp</span><span class="p">[</span><span class="s2">&quot;mode&quot;</span><span class="p">]),</span>
+        <span class="p">),</span>
+        <span class="n">flux_corona</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">raw</span><span class="p">[</span><span class="s2">&quot;flux_corona&quot;</span><span class="p">]),</span>
+        <span class="n">flux_tr</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">raw</span><span class="p">[</span><span class="s2">&quot;flux_tr&quot;</span><span class="p">]),</span>
+        <span class="n">outputs</span><span class="o">=</span><span class="n">EUVOutputFiles</span><span class="p">(</span>
+            <span class="n">output_dir</span><span class="o">=</span><span class="n">Path</span><span class="p">(</span><span class="n">outputs</span><span class="p">[</span><span class="s2">&quot;output_dir&quot;</span><span class="p">]),</span>
+            <span class="n">save_outputs</span><span class="o">=</span><span class="nb">bool</span><span class="p">(</span><span class="n">outputs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;save_outputs&quot;</span><span class="p">,</span> <span class="kc">True</span><span class="p">)),</span>
+            <span class="n">write_preview</span><span class="o">=</span><span class="nb">bool</span><span class="p">(</span><span class="n">outputs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;write_preview&quot;</span><span class="p">,</span> <span class="kc">True</span><span class="p">)),</span>
+            <span class="n">h5_path</span><span class="o">=</span><span class="p">(</span><span class="n">Path</span><span class="p">(</span><span class="n">outputs</span><span class="p">[</span><span class="s2">&quot;h5_path&quot;</span><span class="p">])</span> <span class="k">if</span> <span class="n">outputs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;h5_path&quot;</span><span class="p">)</span> <span class="k">else</span> <span class="kc">None</span><span class="p">),</span>
+            <span class="n">preview_png</span><span class="o">=</span><span class="p">(</span><span class="n">Path</span><span class="p">(</span><span class="n">outputs</span><span class="p">[</span><span class="s2">&quot;preview_png&quot;</span><span class="p">])</span> <span class="k">if</span> <span class="n">outputs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;preview_png&quot;</span><span class="p">)</span> <span class="k">else</span> <span class="kc">None</span><span class="p">),</span>
+        <span class="p">),</span>
+        <span class="n">raw_result</span><span class="o">=</span><span class="n">raw</span><span class="p">,</span>
+    <span class="p">)</span>
+
+
+<div class="viewcode-block" id="render_mw_maps">
+<a class="viewcode-back" href="../../sdk_api.html#gximagecomputing.sdk.render_mw_maps">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">render_mw_maps</span><span class="p">(</span><span class="n">options</span><span class="p">:</span> <span class="n">MWRenderOptions</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">MWRenderResult</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Render microwave maps programmatically without argparse/CLI overhead.</span>
+
+<span class="sd">    Returns a typed `MWRenderResult`.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">ns</span> <span class="o">=</span> <span class="n">Namespace</span><span class="p">(</span>
+        <span class="n">model_path</span><span class="o">=</span><span class="n">Path</span><span class="p">(</span><span class="n">options</span><span class="o">.</span><span class="n">model_path</span><span class="p">),</span>
+        <span class="n">model_format</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">options</span><span class="o">.</span><span class="n">model_format</span><span class="p">),</span>
+        <span class="n">ebtel_path</span><span class="o">=</span><span class="n">options</span><span class="o">.</span><span class="n">ebtel_path</span><span class="p">,</span>
+        <span class="n">output_dir</span><span class="o">=</span><span class="p">(</span><span class="n">Path</span><span class="p">(</span><span class="n">options</span><span class="o">.</span><span class="n">output_dir</span><span class="p">)</span> <span class="k">if</span> <span class="n">options</span><span class="o">.</span><span class="n">output_dir</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">_render_mw_workflow</span><span class="o">.</span><span class="n">DEFAULT_OUTDIR</span><span class="p">),</span>
+        <span class="n">output_name</span><span class="o">=</span><span class="n">options</span><span class="o">.</span><span class="n">output_name</span><span class="p">,</span>
+        <span class="n">output_format</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">options</span><span class="o">.</span><span class="n">output_format</span><span class="p">),</span>
+        <span class="n">omp_threads</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">options</span><span class="o">.</span><span class="n">omp_threads</span><span class="p">),</span>
+        <span class="n">save_outputs</span><span class="o">=</span><span class="nb">bool</span><span class="p">(</span><span class="n">options</span><span class="o">.</span><span class="n">save_outputs</span><span class="p">),</span>
+        <span class="n">write_preview</span><span class="o">=</span><span class="nb">bool</span><span class="p">(</span><span class="n">options</span><span class="o">.</span><span class="n">write_preview</span><span class="p">),</span>
+        <span class="o">**</span><span class="n">_geometry_to_kwargs</span><span class="p">(</span><span class="n">options</span><span class="o">.</span><span class="n">geometry</span><span class="p">),</span>
+        <span class="o">**</span><span class="n">_observer_to_kwargs</span><span class="p">(</span><span class="n">options</span><span class="o">.</span><span class="n">observer</span><span class="p">),</span>
+    <span class="p">)</span>
+    <span class="k">return</span> <span class="n">_mw_result_from_workflow</span><span class="p">(</span><span class="n">_render_mw_workflow</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">ns</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="nb">bool</span><span class="p">(</span><span class="n">options</span><span class="o">.</span><span class="n">verbose</span><span class="p">)))</span></div>
+
+
+
+<div class="viewcode-block" id="render_euv_maps">
+<a class="viewcode-back" href="../../sdk_api.html#gximagecomputing.sdk.render_euv_maps">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">render_euv_maps</span><span class="p">(</span><span class="n">options</span><span class="p">:</span> <span class="n">EUVRenderOptions</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">EUVRenderResult</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Render EUV maps programmatically without argparse/CLI overhead.</span>
+
+<span class="sd">    Returns a typed `EUVRenderResult`.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">ns</span> <span class="o">=</span> <span class="n">Namespace</span><span class="p">(</span>
+        <span class="n">model_path</span><span class="o">=</span><span class="n">Path</span><span class="p">(</span><span class="n">options</span><span class="o">.</span><span class="n">model_path</span><span class="p">),</span>
+        <span class="n">model_format</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">options</span><span class="o">.</span><span class="n">model_format</span><span class="p">),</span>
+        <span class="n">ebtel_path</span><span class="o">=</span><span class="n">options</span><span class="o">.</span><span class="n">ebtel_path</span><span class="p">,</span>
+        <span class="n">output_dir</span><span class="o">=</span><span class="p">(</span><span class="n">Path</span><span class="p">(</span><span class="n">options</span><span class="o">.</span><span class="n">output_dir</span><span class="p">)</span> <span class="k">if</span> <span class="n">options</span><span class="o">.</span><span class="n">output_dir</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">_render_euv_workflow</span><span class="o">.</span><span class="n">DEFAULT_OUTDIR</span><span class="p">),</span>
+        <span class="n">output_name</span><span class="o">=</span><span class="n">options</span><span class="o">.</span><span class="n">output_name</span><span class="p">,</span>
+        <span class="n">channels</span><span class="o">=</span><span class="nb">list</span><span class="p">(</span><span class="n">options</span><span class="o">.</span><span class="n">channels</span><span class="p">)</span> <span class="k">if</span> <span class="n">options</span><span class="o">.</span><span class="n">channels</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="p">[</span><span class="s2">&quot;94&quot;</span><span class="p">,</span> <span class="s2">&quot;131&quot;</span><span class="p">,</span> <span class="s2">&quot;171&quot;</span><span class="p">,</span> <span class="s2">&quot;193&quot;</span><span class="p">,</span> <span class="s2">&quot;211&quot;</span><span class="p">,</span> <span class="s2">&quot;304&quot;</span><span class="p">,</span> <span class="s2">&quot;335&quot;</span><span class="p">],</span>
+        <span class="n">instrument</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">options</span><span class="o">.</span><span class="n">instrument</span><span class="p">),</span>
+        <span class="n">response_sav</span><span class="o">=</span><span class="p">(</span><span class="n">Path</span><span class="p">(</span><span class="n">options</span><span class="o">.</span><span class="n">response_sav</span><span class="p">)</span> <span class="k">if</span> <span class="n">options</span><span class="o">.</span><span class="n">response_sav</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="kc">None</span><span class="p">),</span>
+        <span class="n">omp_threads</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">options</span><span class="o">.</span><span class="n">omp_threads</span><span class="p">),</span>
+        <span class="n">save_outputs</span><span class="o">=</span><span class="nb">bool</span><span class="p">(</span><span class="n">options</span><span class="o">.</span><span class="n">save_outputs</span><span class="p">),</span>
+        <span class="n">write_preview</span><span class="o">=</span><span class="nb">bool</span><span class="p">(</span><span class="n">options</span><span class="o">.</span><span class="n">write_preview</span><span class="p">),</span>
+        <span class="o">**</span><span class="n">_geometry_to_kwargs</span><span class="p">(</span><span class="n">options</span><span class="o">.</span><span class="n">geometry</span><span class="p">),</span>
+        <span class="o">**</span><span class="n">_observer_to_kwargs</span><span class="p">(</span><span class="n">options</span><span class="o">.</span><span class="n">observer</span><span class="p">),</span>
+    <span class="p">)</span>
+    <span class="k">return</span> <span class="n">_euv_result_from_workflow</span><span class="p">(</span><span class="n">_render_euv_workflow</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">ns</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="nb">bool</span><span class="p">(</span><span class="n">options</span><span class="o">.</span><span class="n">verbose</span><span class="p">)))</span></div>
+
+
+
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s2">&quot;ObserverOverrides&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;MapGeometry&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;MWRenderOptions&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;EUVRenderOptions&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;RenderGeometryInfo&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;MWOutputFiles&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;EUVOutputFiles&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;EUVResponseInfo&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;MWRenderResult&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;EUVRenderResult&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;render_mw_maps&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;render_euv_maps&quot;</span><span class="p">,</span>
+<span class="p">]</span>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2026, suncast-org.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

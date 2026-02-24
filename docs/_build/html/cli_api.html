@@ -1,0 +1,250 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CLI Workflow Modules &mdash; pyGXrender / gximagecomputing 0.0.2.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=9edc463e" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=7d2f95e5"></script>
+      <script src="_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Rendered Map Viewer API" href="viewer_api.html" />
+    <link rel="prev" title="SDK API (Programmatic Rendering)" href="sdk_api.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            pyGXrender / gximagecomputing
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="quickstart.html">Quick Start</a></li>
+<li class="toctree-l1"><a class="reference internal" href="examples.html">Examples Layout</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sdk_api.html">SDK API (Programmatic Rendering)</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">CLI Workflow Modules</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#module-gximagecomputing.workflows.render_mw">MW workflow</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#gximagecomputing.workflows.render_mw.save_preview"><code class="docutils literal notranslate"><span class="pre">save_preview()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#gximagecomputing.workflows.render_mw.save_sunpy_maps"><code class="docutils literal notranslate"><span class="pre">save_sunpy_maps()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#gximagecomputing.workflows.render_mw.parse_args"><code class="docutils literal notranslate"><span class="pre">parse_args()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#gximagecomputing.workflows.render_mw.run"><code class="docutils literal notranslate"><span class="pre">run()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#gximagecomputing.workflows.render_mw.main"><code class="docutils literal notranslate"><span class="pre">main()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#module-gximagecomputing.workflows.render_euv">EUV workflow</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#gximagecomputing.workflows.render_euv.parse_args"><code class="docutils literal notranslate"><span class="pre">parse_args()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#gximagecomputing.workflows.render_euv.run"><code class="docutils literal notranslate"><span class="pre">run()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#gximagecomputing.workflows.render_euv.main"><code class="docutils literal notranslate"><span class="pre">main()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="viewer_api.html">Rendered Map Viewer API</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">pyGXrender / gximagecomputing</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">CLI Workflow Modules</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/cli_api.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="cli-workflow-modules">
+<h1>CLI Workflow Modules<a class="headerlink" href="#cli-workflow-modules" title="Link to this heading"></a></h1>
+<p>These modules back the <code class="docutils literal notranslate"><span class="pre">gxrender-mw</span></code> and <code class="docutils literal notranslate"><span class="pre">gxrender-euv</span></code> command-line
+entry points and are also importable from Python if you need workflow-level
+control.</p>
+<section id="module-gximagecomputing.workflows.render_mw">
+<span id="mw-workflow"></span><h2>MW workflow<a class="headerlink" href="#module-gximagecomputing.workflows.render_mw" title="Link to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="gximagecomputing.workflows.render_mw.save_preview">
+<span class="sig-prename descclassname"><span class="pre">gximagecomputing.workflows.render_mw.</span></span><span class="sig-name descname"><span class="pre">save_preview</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">h5_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">out_png</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">title</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gximagecomputing/workflows/render_mw.html#save_preview"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gximagecomputing.workflows.render_mw.save_preview" title="Link to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>h5_path</strong> (<em>Path</em>)</p></li>
+<li><p><strong>out_png</strong> (<em>Path</em>)</p></li>
+<li><p><strong>title</strong> (<em>str</em>)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="gximagecomputing.workflows.render_mw.save_sunpy_maps">
+<span class="sig-prename descclassname"><span class="pre">gximagecomputing.workflows.render_mw.</span></span><span class="sig-name descname"><span class="pre">save_sunpy_maps</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">result</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">freqlist</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">out_dir</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stem</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xc</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">yc</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dx</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dy</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">obs_time_iso</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gximagecomputing/workflows/render_mw.html#save_sunpy_maps"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gximagecomputing.workflows.render_mw.save_sunpy_maps" title="Link to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>result</strong> (<em>dict</em>)</p></li>
+<li><p><strong>freqlist</strong> (<em>list</em><em>[</em><em>float</em><em>]</em>)</p></li>
+<li><p><strong>out_dir</strong> (<em>Path</em>)</p></li>
+<li><p><strong>stem</strong> (<em>str</em>)</p></li>
+<li><p><strong>xc</strong> (<em>float</em>)</p></li>
+<li><p><strong>yc</strong> (<em>float</em>)</p></li>
+<li><p><strong>dx</strong> (<em>float</em>)</p></li>
+<li><p><strong>dy</strong> (<em>float</em>)</p></li>
+<li><p><strong>obs_time_iso</strong> (<em>str</em>)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>list[str]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="gximagecomputing.workflows.render_mw.parse_args">
+<span class="sig-prename descclassname"><span class="pre">gximagecomputing.workflows.render_mw.</span></span><span class="sig-name descname"><span class="pre">parse_args</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/gximagecomputing/workflows/render_mw.html#parse_args"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gximagecomputing.workflows.render_mw.parse_args" title="Link to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><em>Namespace</em></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="gximagecomputing.workflows.render_mw.run">
+<span class="sig-prename descclassname"><span class="pre">gximagecomputing.workflows.render_mw.</span></span><span class="sig-name descname"><span class="pre">run</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gximagecomputing/workflows/render_mw.html#run"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gximagecomputing.workflows.render_mw.run" title="Link to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>args</strong> (<em>Namespace</em>)</p></li>
+<li><p><strong>verbose</strong> (<em>bool</em>)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="gximagecomputing.workflows.render_mw.main">
+<span class="sig-prename descclassname"><span class="pre">gximagecomputing.workflows.render_mw.</span></span><span class="sig-name descname"><span class="pre">main</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/gximagecomputing/workflows/render_mw.html#main"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gximagecomputing.workflows.render_mw.main" title="Link to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="module-gximagecomputing.workflows.render_euv">
+<span id="euv-workflow"></span><h2>EUV workflow<a class="headerlink" href="#module-gximagecomputing.workflows.render_euv" title="Link to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="gximagecomputing.workflows.render_euv.parse_args">
+<span class="sig-prename descclassname"><span class="pre">gximagecomputing.workflows.render_euv.</span></span><span class="sig-name descname"><span class="pre">parse_args</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/gximagecomputing/workflows/render_euv.html#parse_args"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gximagecomputing.workflows.render_euv.parse_args" title="Link to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><em>Namespace</em></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="gximagecomputing.workflows.render_euv.run">
+<span class="sig-prename descclassname"><span class="pre">gximagecomputing.workflows.render_euv.</span></span><span class="sig-name descname"><span class="pre">run</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gximagecomputing/workflows/render_euv.html#run"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gximagecomputing.workflows.render_euv.run" title="Link to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>args</strong> (<em>Namespace</em>)</p></li>
+<li><p><strong>verbose</strong> (<em>bool</em>)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="gximagecomputing.workflows.render_euv.main">
+<span class="sig-prename descclassname"><span class="pre">gximagecomputing.workflows.render_euv.</span></span><span class="sig-name descname"><span class="pre">main</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/gximagecomputing/workflows/render_euv.html#main"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gximagecomputing.workflows.render_euv.main" title="Link to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="sdk_api.html" class="btn btn-neutral float-left" title="SDK API (Programmatic Rendering)" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="viewer_api.html" class="btn btn-neutral float-right" title="Rendered Map Viewer API" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2026, suncast-org.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

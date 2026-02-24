@@ -1,0 +1,910 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SDK API (Programmatic Rendering) &mdash; pyGXrender / gximagecomputing 0.0.2.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=9edc463e" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=7d2f95e5"></script>
+      <script src="_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="CLI Workflow Modules" href="cli_api.html" />
+    <link rel="prev" title="Examples Layout" href="examples.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            pyGXrender / gximagecomputing
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="quickstart.html">Quick Start</a></li>
+<li class="toctree-l1"><a class="reference internal" href="examples.html">Examples Layout</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">SDK API (Programmatic Rendering)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#gximagecomputing.sdk.ObserverOverrides"><code class="docutils literal notranslate"><span class="pre">ObserverOverrides</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#gximagecomputing.sdk.ObserverOverrides.dsun_cm"><code class="docutils literal notranslate"><span class="pre">ObserverOverrides.dsun_cm</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#gximagecomputing.sdk.ObserverOverrides.lonc_deg"><code class="docutils literal notranslate"><span class="pre">ObserverOverrides.lonc_deg</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#gximagecomputing.sdk.ObserverOverrides.b0sun_deg"><code class="docutils literal notranslate"><span class="pre">ObserverOverrides.b0sun_deg</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#gximagecomputing.sdk.MapGeometry"><code class="docutils literal notranslate"><span class="pre">MapGeometry</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#gximagecomputing.sdk.MapGeometry.xc"><code class="docutils literal notranslate"><span class="pre">MapGeometry.xc</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#gximagecomputing.sdk.MapGeometry.yc"><code class="docutils literal notranslate"><span class="pre">MapGeometry.yc</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#gximagecomputing.sdk.MapGeometry.dx"><code class="docutils literal notranslate"><span class="pre">MapGeometry.dx</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#gximagecomputing.sdk.MapGeometry.dy"><code class="docutils literal notranslate"><span class="pre">MapGeometry.dy</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#gximagecomputing.sdk.MapGeometry.pixel_scale_arcsec"><code class="docutils literal notranslate"><span class="pre">MapGeometry.pixel_scale_arcsec</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#gximagecomputing.sdk.MapGeometry.nx"><code class="docutils literal notranslate"><span class="pre">MapGeometry.nx</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#gximagecomputing.sdk.MapGeometry.ny"><code class="docutils literal notranslate"><span class="pre">MapGeometry.ny</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#gximagecomputing.sdk.MapGeometry.xrange"><code class="docutils literal notranslate"><span class="pre">MapGeometry.xrange</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#gximagecomputing.sdk.MapGeometry.yrange"><code class="docutils literal notranslate"><span class="pre">MapGeometry.yrange</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#gximagecomputing.sdk.MWRenderOptions"><code class="docutils literal notranslate"><span class="pre">MWRenderOptions</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#gximagecomputing.sdk.MWRenderOptions.model_path"><code class="docutils literal notranslate"><span class="pre">MWRenderOptions.model_path</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#gximagecomputing.sdk.MWRenderOptions.model_format"><code class="docutils literal notranslate"><span class="pre">MWRenderOptions.model_format</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#gximagecomputing.sdk.MWRenderOptions.ebtel_path"><code class="docutils literal notranslate"><span class="pre">MWRenderOptions.ebtel_path</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#gximagecomputing.sdk.MWRenderOptions.output_dir"><code class="docutils literal notranslate"><span class="pre">MWRenderOptions.output_dir</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#gximagecomputing.sdk.MWRenderOptions.output_name"><code class="docutils literal notranslate"><span class="pre">MWRenderOptions.output_name</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#gximagecomputing.sdk.MWRenderOptions.output_format"><code class="docutils literal notranslate"><span class="pre">MWRenderOptions.output_format</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#gximagecomputing.sdk.MWRenderOptions.omp_threads"><code class="docutils literal notranslate"><span class="pre">MWRenderOptions.omp_threads</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#gximagecomputing.sdk.MWRenderOptions.geometry"><code class="docutils literal notranslate"><span class="pre">MWRenderOptions.geometry</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#gximagecomputing.sdk.MWRenderOptions.observer"><code class="docutils literal notranslate"><span class="pre">MWRenderOptions.observer</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#gximagecomputing.sdk.MWRenderOptions.save_outputs"><code class="docutils literal notranslate"><span class="pre">MWRenderOptions.save_outputs</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#gximagecomputing.sdk.MWRenderOptions.write_preview"><code class="docutils literal notranslate"><span class="pre">MWRenderOptions.write_preview</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#gximagecomputing.sdk.MWRenderOptions.verbose"><code class="docutils literal notranslate"><span class="pre">MWRenderOptions.verbose</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#gximagecomputing.sdk.EUVRenderOptions"><code class="docutils literal notranslate"><span class="pre">EUVRenderOptions</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#gximagecomputing.sdk.EUVRenderOptions.model_path"><code class="docutils literal notranslate"><span class="pre">EUVRenderOptions.model_path</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#gximagecomputing.sdk.EUVRenderOptions.model_format"><code class="docutils literal notranslate"><span class="pre">EUVRenderOptions.model_format</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#gximagecomputing.sdk.EUVRenderOptions.ebtel_path"><code class="docutils literal notranslate"><span class="pre">EUVRenderOptions.ebtel_path</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#gximagecomputing.sdk.EUVRenderOptions.output_dir"><code class="docutils literal notranslate"><span class="pre">EUVRenderOptions.output_dir</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#gximagecomputing.sdk.EUVRenderOptions.output_name"><code class="docutils literal notranslate"><span class="pre">EUVRenderOptions.output_name</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#gximagecomputing.sdk.EUVRenderOptions.channels"><code class="docutils literal notranslate"><span class="pre">EUVRenderOptions.channels</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#gximagecomputing.sdk.EUVRenderOptions.instrument"><code class="docutils literal notranslate"><span class="pre">EUVRenderOptions.instrument</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#gximagecomputing.sdk.EUVRenderOptions.response_sav"><code class="docutils literal notranslate"><span class="pre">EUVRenderOptions.response_sav</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#gximagecomputing.sdk.EUVRenderOptions.omp_threads"><code class="docutils literal notranslate"><span class="pre">EUVRenderOptions.omp_threads</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#gximagecomputing.sdk.EUVRenderOptions.geometry"><code class="docutils literal notranslate"><span class="pre">EUVRenderOptions.geometry</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#gximagecomputing.sdk.EUVRenderOptions.observer"><code class="docutils literal notranslate"><span class="pre">EUVRenderOptions.observer</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#gximagecomputing.sdk.EUVRenderOptions.save_outputs"><code class="docutils literal notranslate"><span class="pre">EUVRenderOptions.save_outputs</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#gximagecomputing.sdk.EUVRenderOptions.write_preview"><code class="docutils literal notranslate"><span class="pre">EUVRenderOptions.write_preview</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#gximagecomputing.sdk.EUVRenderOptions.verbose"><code class="docutils literal notranslate"><span class="pre">EUVRenderOptions.verbose</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#gximagecomputing.sdk.RenderGeometryInfo"><code class="docutils literal notranslate"><span class="pre">RenderGeometryInfo</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#gximagecomputing.sdk.RenderGeometryInfo.xc_arcsec"><code class="docutils literal notranslate"><span class="pre">RenderGeometryInfo.xc_arcsec</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#gximagecomputing.sdk.RenderGeometryInfo.yc_arcsec"><code class="docutils literal notranslate"><span class="pre">RenderGeometryInfo.yc_arcsec</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#gximagecomputing.sdk.RenderGeometryInfo.dx_arcsec"><code class="docutils literal notranslate"><span class="pre">RenderGeometryInfo.dx_arcsec</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#gximagecomputing.sdk.RenderGeometryInfo.dy_arcsec"><code class="docutils literal notranslate"><span class="pre">RenderGeometryInfo.dy_arcsec</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#gximagecomputing.sdk.RenderGeometryInfo.nx"><code class="docutils literal notranslate"><span class="pre">RenderGeometryInfo.nx</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#gximagecomputing.sdk.RenderGeometryInfo.ny"><code class="docutils literal notranslate"><span class="pre">RenderGeometryInfo.ny</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#gximagecomputing.sdk.RenderGeometryInfo.fov_x_arcsec"><code class="docutils literal notranslate"><span class="pre">RenderGeometryInfo.fov_x_arcsec</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#gximagecomputing.sdk.RenderGeometryInfo.fov_y_arcsec"><code class="docutils literal notranslate"><span class="pre">RenderGeometryInfo.fov_y_arcsec</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#gximagecomputing.sdk.MWOutputFiles"><code class="docutils literal notranslate"><span class="pre">MWOutputFiles</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#gximagecomputing.sdk.MWOutputFiles.output_dir"><code class="docutils literal notranslate"><span class="pre">MWOutputFiles.output_dir</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#gximagecomputing.sdk.MWOutputFiles.save_outputs"><code class="docutils literal notranslate"><span class="pre">MWOutputFiles.save_outputs</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#gximagecomputing.sdk.MWOutputFiles.write_preview"><code class="docutils literal notranslate"><span class="pre">MWOutputFiles.write_preview</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#gximagecomputing.sdk.MWOutputFiles.h5_path"><code class="docutils literal notranslate"><span class="pre">MWOutputFiles.h5_path</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#gximagecomputing.sdk.MWOutputFiles.preview_png"><code class="docutils literal notranslate"><span class="pre">MWOutputFiles.preview_png</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#gximagecomputing.sdk.MWOutputFiles.fits_paths"><code class="docutils literal notranslate"><span class="pre">MWOutputFiles.fits_paths</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#gximagecomputing.sdk.EUVOutputFiles"><code class="docutils literal notranslate"><span class="pre">EUVOutputFiles</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#gximagecomputing.sdk.EUVOutputFiles.output_dir"><code class="docutils literal notranslate"><span class="pre">EUVOutputFiles.output_dir</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#gximagecomputing.sdk.EUVOutputFiles.save_outputs"><code class="docutils literal notranslate"><span class="pre">EUVOutputFiles.save_outputs</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#gximagecomputing.sdk.EUVOutputFiles.write_preview"><code class="docutils literal notranslate"><span class="pre">EUVOutputFiles.write_preview</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#gximagecomputing.sdk.EUVOutputFiles.h5_path"><code class="docutils literal notranslate"><span class="pre">EUVOutputFiles.h5_path</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#gximagecomputing.sdk.EUVOutputFiles.preview_png"><code class="docutils literal notranslate"><span class="pre">EUVOutputFiles.preview_png</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#gximagecomputing.sdk.EUVResponseInfo"><code class="docutils literal notranslate"><span class="pre">EUVResponseInfo</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#gximagecomputing.sdk.EUVResponseInfo.instrument"><code class="docutils literal notranslate"><span class="pre">EUVResponseInfo.instrument</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#gximagecomputing.sdk.EUVResponseInfo.channels"><code class="docutils literal notranslate"><span class="pre">EUVResponseInfo.channels</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#gximagecomputing.sdk.EUVResponseInfo.source"><code class="docutils literal notranslate"><span class="pre">EUVResponseInfo.source</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#gximagecomputing.sdk.EUVResponseInfo.mode"><code class="docutils literal notranslate"><span class="pre">EUVResponseInfo.mode</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#gximagecomputing.sdk.MWRenderResult"><code class="docutils literal notranslate"><span class="pre">MWRenderResult</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#gximagecomputing.sdk.MWRenderResult.library_path"><code class="docutils literal notranslate"><span class="pre">MWRenderResult.library_path</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#gximagecomputing.sdk.MWRenderResult.model_path"><code class="docutils literal notranslate"><span class="pre">MWRenderResult.model_path</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#gximagecomputing.sdk.MWRenderResult.model_format"><code class="docutils literal notranslate"><span class="pre">MWRenderResult.model_format</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#gximagecomputing.sdk.MWRenderResult.ebtel_path"><code class="docutils literal notranslate"><span class="pre">MWRenderResult.ebtel_path</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#gximagecomputing.sdk.MWRenderResult.observer_overrides_applied"><code class="docutils literal notranslate"><span class="pre">MWRenderResult.observer_overrides_applied</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#gximagecomputing.sdk.MWRenderResult.center_source"><code class="docutils literal notranslate"><span class="pre">MWRenderResult.center_source</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#gximagecomputing.sdk.MWRenderResult.geometry"><code class="docutils literal notranslate"><span class="pre">MWRenderResult.geometry</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#gximagecomputing.sdk.MWRenderResult.obs_time_iso"><code class="docutils literal notranslate"><span class="pre">MWRenderResult.obs_time_iso</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#gximagecomputing.sdk.MWRenderResult.freqlist_ghz"><code class="docutils literal notranslate"><span class="pre">MWRenderResult.freqlist_ghz</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#gximagecomputing.sdk.MWRenderResult.ti"><code class="docutils literal notranslate"><span class="pre">MWRenderResult.ti</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#gximagecomputing.sdk.MWRenderResult.tv"><code class="docutils literal notranslate"><span class="pre">MWRenderResult.tv</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#gximagecomputing.sdk.MWRenderResult.outputs"><code class="docutils literal notranslate"><span class="pre">MWRenderResult.outputs</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#gximagecomputing.sdk.MWRenderResult.raw_result"><code class="docutils literal notranslate"><span class="pre">MWRenderResult.raw_result</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#gximagecomputing.sdk.EUVRenderResult"><code class="docutils literal notranslate"><span class="pre">EUVRenderResult</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#gximagecomputing.sdk.EUVRenderResult.library_path"><code class="docutils literal notranslate"><span class="pre">EUVRenderResult.library_path</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#gximagecomputing.sdk.EUVRenderResult.model_path"><code class="docutils literal notranslate"><span class="pre">EUVRenderResult.model_path</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#gximagecomputing.sdk.EUVRenderResult.model_format"><code class="docutils literal notranslate"><span class="pre">EUVRenderResult.model_format</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#gximagecomputing.sdk.EUVRenderResult.ebtel_path"><code class="docutils literal notranslate"><span class="pre">EUVRenderResult.ebtel_path</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#gximagecomputing.sdk.EUVRenderResult.observer_overrides_applied"><code class="docutils literal notranslate"><span class="pre">EUVRenderResult.observer_overrides_applied</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#gximagecomputing.sdk.EUVRenderResult.center_source"><code class="docutils literal notranslate"><span class="pre">EUVRenderResult.center_source</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#gximagecomputing.sdk.EUVRenderResult.geometry"><code class="docutils literal notranslate"><span class="pre">EUVRenderResult.geometry</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#gximagecomputing.sdk.EUVRenderResult.obs_time_iso"><code class="docutils literal notranslate"><span class="pre">EUVRenderResult.obs_time_iso</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#gximagecomputing.sdk.EUVRenderResult.response"><code class="docutils literal notranslate"><span class="pre">EUVRenderResult.response</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#gximagecomputing.sdk.EUVRenderResult.flux_corona"><code class="docutils literal notranslate"><span class="pre">EUVRenderResult.flux_corona</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#gximagecomputing.sdk.EUVRenderResult.flux_tr"><code class="docutils literal notranslate"><span class="pre">EUVRenderResult.flux_tr</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#gximagecomputing.sdk.EUVRenderResult.outputs"><code class="docutils literal notranslate"><span class="pre">EUVRenderResult.outputs</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#gximagecomputing.sdk.EUVRenderResult.raw_result"><code class="docutils literal notranslate"><span class="pre">EUVRenderResult.raw_result</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#gximagecomputing.sdk.render_mw_maps"><code class="docutils literal notranslate"><span class="pre">render_mw_maps()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#gximagecomputing.sdk.render_euv_maps"><code class="docutils literal notranslate"><span class="pre">render_euv_maps()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="cli_api.html">CLI Workflow Modules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="viewer_api.html">Rendered Map Viewer API</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">pyGXrender / gximagecomputing</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">SDK API (Programmatic Rendering)</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/sdk_api.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="sdk-api-programmatic-rendering">
+<h1>SDK API (Programmatic Rendering)<a class="headerlink" href="#sdk-api-programmatic-rendering" title="Link to this heading"></a></h1>
+<p>The SDK layer provides typed option/result objects for application integration
+without <code class="docutils literal notranslate"><span class="pre">argparse.Namespace</span></code> coupling.</p>
+<dl class="py class" id="module-gximagecomputing.sdk">
+<dt class="sig sig-object py" id="gximagecomputing.sdk.ObserverOverrides">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">gximagecomputing.sdk.</span></span><span class="sig-name descname"><span class="pre">ObserverOverrides</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dsun_cm</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lonc_deg</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">b0sun_deg</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gximagecomputing/sdk.html#ObserverOverrides"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gximagecomputing.sdk.ObserverOverrides" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Optional observer metadata overrides applied before rendering.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>dsun_cm</strong> (<em>float</em><em> | </em><em>None</em>)</p></li>
+<li><p><strong>lonc_deg</strong> (<em>float</em><em> | </em><em>None</em>)</p></li>
+<li><p><strong>b0sun_deg</strong> (<em>float</em><em> | </em><em>None</em>)</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="gximagecomputing.sdk.ObserverOverrides.dsun_cm">
+<span class="sig-name descname"><span class="pre">dsun_cm</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><a class="headerlink" href="#gximagecomputing.sdk.ObserverOverrides.dsun_cm" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="gximagecomputing.sdk.ObserverOverrides.lonc_deg">
+<span class="sig-name descname"><span class="pre">lonc_deg</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><a class="headerlink" href="#gximagecomputing.sdk.ObserverOverrides.lonc_deg" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="gximagecomputing.sdk.ObserverOverrides.b0sun_deg">
+<span class="sig-name descname"><span class="pre">b0sun_deg</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><a class="headerlink" href="#gximagecomputing.sdk.ObserverOverrides.b0sun_deg" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="gximagecomputing.sdk.MapGeometry">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">gximagecomputing.sdk.</span></span><span class="sig-name descname"><span class="pre">MapGeometry</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">xc</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">yc</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dx</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dy</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pixel_scale_arcsec</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nx</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ny</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xrange</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">yrange</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gximagecomputing/sdk.html#MapGeometry"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gximagecomputing.sdk.MapGeometry" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Optional output map geometry controls.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>xc</strong> (<em>float</em><em> | </em><em>None</em>)</p></li>
+<li><p><strong>yc</strong> (<em>float</em><em> | </em><em>None</em>)</p></li>
+<li><p><strong>dx</strong> (<em>float</em><em> | </em><em>None</em>)</p></li>
+<li><p><strong>dy</strong> (<em>float</em><em> | </em><em>None</em>)</p></li>
+<li><p><strong>pixel_scale_arcsec</strong> (<em>float</em><em> | </em><em>None</em>)</p></li>
+<li><p><strong>nx</strong> (<em>int</em><em> | </em><em>None</em>)</p></li>
+<li><p><strong>ny</strong> (<em>int</em><em> | </em><em>None</em>)</p></li>
+<li><p><strong>xrange</strong> (<em>tuple</em><em>[</em><em>float</em><em>, </em><em>float</em><em>] </em><em>| </em><em>None</em>)</p></li>
+<li><p><strong>yrange</strong> (<em>tuple</em><em>[</em><em>float</em><em>, </em><em>float</em><em>] </em><em>| </em><em>None</em>)</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="gximagecomputing.sdk.MapGeometry.xc">
+<span class="sig-name descname"><span class="pre">xc</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><a class="headerlink" href="#gximagecomputing.sdk.MapGeometry.xc" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="gximagecomputing.sdk.MapGeometry.yc">
+<span class="sig-name descname"><span class="pre">yc</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><a class="headerlink" href="#gximagecomputing.sdk.MapGeometry.yc" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="gximagecomputing.sdk.MapGeometry.dx">
+<span class="sig-name descname"><span class="pre">dx</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><a class="headerlink" href="#gximagecomputing.sdk.MapGeometry.dx" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="gximagecomputing.sdk.MapGeometry.dy">
+<span class="sig-name descname"><span class="pre">dy</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><a class="headerlink" href="#gximagecomputing.sdk.MapGeometry.dy" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="gximagecomputing.sdk.MapGeometry.pixel_scale_arcsec">
+<span class="sig-name descname"><span class="pre">pixel_scale_arcsec</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><a class="headerlink" href="#gximagecomputing.sdk.MapGeometry.pixel_scale_arcsec" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="gximagecomputing.sdk.MapGeometry.nx">
+<span class="sig-name descname"><span class="pre">nx</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><a class="headerlink" href="#gximagecomputing.sdk.MapGeometry.nx" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="gximagecomputing.sdk.MapGeometry.ny">
+<span class="sig-name descname"><span class="pre">ny</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><a class="headerlink" href="#gximagecomputing.sdk.MapGeometry.ny" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="gximagecomputing.sdk.MapGeometry.xrange">
+<span class="sig-name descname"><span class="pre">xrange</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><a class="headerlink" href="#gximagecomputing.sdk.MapGeometry.xrange" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="gximagecomputing.sdk.MapGeometry.yrange">
+<span class="sig-name descname"><span class="pre">yrange</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><a class="headerlink" href="#gximagecomputing.sdk.MapGeometry.yrange" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="gximagecomputing.sdk.MWRenderOptions">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">gximagecomputing.sdk.</span></span><span class="sig-name descname"><span class="pre">MWRenderOptions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="s"><span class="pre">'str</span> <span class="pre">|</span> <span class="pre">Path'</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model_format</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="s"><span class="pre">&quot;Literal['h5',</span> <span class="pre">'sav',</span> <span class="pre">'auto']&quot;</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'auto'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ebtel_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="s"><span class="pre">'str</span> <span class="pre">|</span> <span class="pre">None'</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_dir</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="s"><span class="pre">'str</span> <span class="pre">|</span> <span class="pre">Path</span> <span class="pre">|</span> <span class="pre">None'</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="s"><span class="pre">'str</span> <span class="pre">|</span> <span class="pre">None'</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_format</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="s"><span class="pre">&quot;Literal['h5',</span> <span class="pre">'fits',</span> <span class="pre">'both']&quot;</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'h5'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">omp_threads</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="s"><span class="pre">'int'</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">8</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">geometry</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="s"><span class="pre">'MapGeometry</span> <span class="pre">|</span> <span class="pre">None'</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">observer</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="s"><span class="pre">'ObserverOverrides</span> <span class="pre">|</span> <span class="pre">None'</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save_outputs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="s"><span class="pre">'bool'</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">write_preview</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="s"><span class="pre">'bool'</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="s"><span class="pre">'bool'</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gximagecomputing/sdk.html#MWRenderOptions"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gximagecomputing.sdk.MWRenderOptions" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>model_path</strong> (<em>str</em><em> | </em><em>Path</em>)</p></li>
+<li><p><strong>model_format</strong> (<em>Literal</em><em>[</em><em>'h5'</em><em>, </em><em>'sav'</em><em>, </em><em>'auto'</em><em>]</em>)</p></li>
+<li><p><strong>ebtel_path</strong> (<em>str</em><em> | </em><em>None</em>)</p></li>
+<li><p><strong>output_dir</strong> (<em>str</em><em> | </em><em>Path</em><em> | </em><em>None</em>)</p></li>
+<li><p><strong>output_name</strong> (<em>str</em><em> | </em><em>None</em>)</p></li>
+<li><p><strong>output_format</strong> (<em>Literal</em><em>[</em><em>'h5'</em><em>, </em><em>'fits'</em><em>, </em><em>'both'</em><em>]</em>)</p></li>
+<li><p><strong>omp_threads</strong> (<em>int</em>)</p></li>
+<li><p><strong>geometry</strong> (<a class="reference internal" href="#gximagecomputing.sdk.MapGeometry" title="gximagecomputing.sdk.MapGeometry"><em>MapGeometry</em></a><em> | </em><em>None</em>)</p></li>
+<li><p><strong>observer</strong> (<a class="reference internal" href="#gximagecomputing.sdk.ObserverOverrides" title="gximagecomputing.sdk.ObserverOverrides"><em>ObserverOverrides</em></a><em> | </em><em>None</em>)</p></li>
+<li><p><strong>save_outputs</strong> (<em>bool</em>)</p></li>
+<li><p><strong>write_preview</strong> (<em>bool</em>)</p></li>
+<li><p><strong>verbose</strong> (<em>bool</em>)</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="gximagecomputing.sdk.MWRenderOptions.model_path">
+<span class="sig-name descname"><span class="pre">model_path</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Path</span></span><a class="headerlink" href="#gximagecomputing.sdk.MWRenderOptions.model_path" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="gximagecomputing.sdk.MWRenderOptions.model_format">
+<span class="sig-name descname"><span class="pre">model_format</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Literal</span><span class="p"><span class="pre">[</span></span><span class="s"><span class="pre">'h5'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'sav'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'auto'</span></span><span class="p"><span class="pre">]</span></span></span><a class="headerlink" href="#gximagecomputing.sdk.MWRenderOptions.model_format" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="gximagecomputing.sdk.MWRenderOptions.ebtel_path">
+<span class="sig-name descname"><span class="pre">ebtel_path</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><a class="headerlink" href="#gximagecomputing.sdk.MWRenderOptions.ebtel_path" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="gximagecomputing.sdk.MWRenderOptions.output_dir">
+<span class="sig-name descname"><span class="pre">output_dir</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Path</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><a class="headerlink" href="#gximagecomputing.sdk.MWRenderOptions.output_dir" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="gximagecomputing.sdk.MWRenderOptions.output_name">
+<span class="sig-name descname"><span class="pre">output_name</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><a class="headerlink" href="#gximagecomputing.sdk.MWRenderOptions.output_name" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="gximagecomputing.sdk.MWRenderOptions.output_format">
+<span class="sig-name descname"><span class="pre">output_format</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Literal</span><span class="p"><span class="pre">[</span></span><span class="s"><span class="pre">'h5'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'fits'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'both'</span></span><span class="p"><span class="pre">]</span></span></span><a class="headerlink" href="#gximagecomputing.sdk.MWRenderOptions.output_format" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="gximagecomputing.sdk.MWRenderOptions.omp_threads">
+<span class="sig-name descname"><span class="pre">omp_threads</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></span><a class="headerlink" href="#gximagecomputing.sdk.MWRenderOptions.omp_threads" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="gximagecomputing.sdk.MWRenderOptions.geometry">
+<span class="sig-name descname"><span class="pre">geometry</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#gximagecomputing.sdk.MapGeometry" title="gximagecomputing.sdk.MapGeometry"><span class="pre">MapGeometry</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><a class="headerlink" href="#gximagecomputing.sdk.MWRenderOptions.geometry" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="gximagecomputing.sdk.MWRenderOptions.observer">
+<span class="sig-name descname"><span class="pre">observer</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#gximagecomputing.sdk.ObserverOverrides" title="gximagecomputing.sdk.ObserverOverrides"><span class="pre">ObserverOverrides</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><a class="headerlink" href="#gximagecomputing.sdk.MWRenderOptions.observer" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="gximagecomputing.sdk.MWRenderOptions.save_outputs">
+<span class="sig-name descname"><span class="pre">save_outputs</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></span><a class="headerlink" href="#gximagecomputing.sdk.MWRenderOptions.save_outputs" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="gximagecomputing.sdk.MWRenderOptions.write_preview">
+<span class="sig-name descname"><span class="pre">write_preview</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></span><a class="headerlink" href="#gximagecomputing.sdk.MWRenderOptions.write_preview" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="gximagecomputing.sdk.MWRenderOptions.verbose">
+<span class="sig-name descname"><span class="pre">verbose</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></span><a class="headerlink" href="#gximagecomputing.sdk.MWRenderOptions.verbose" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="gximagecomputing.sdk.EUVRenderOptions">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">gximagecomputing.sdk.</span></span><span class="sig-name descname"><span class="pre">EUVRenderOptions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="s"><span class="pre">'str</span> <span class="pre">|</span> <span class="pre">Path'</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model_format</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="s"><span class="pre">&quot;Literal['h5',</span> <span class="pre">'sav',</span> <span class="pre">'auto']&quot;</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'auto'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ebtel_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="s"><span class="pre">'str</span> <span class="pre">|</span> <span class="pre">None'</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_dir</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="s"><span class="pre">'str</span> <span class="pre">|</span> <span class="pre">Path</span> <span class="pre">|</span> <span class="pre">None'</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="s"><span class="pre">'str</span> <span class="pre">|</span> <span class="pre">None'</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">channels</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="s"><span class="pre">'Sequence[str]</span> <span class="pre">|</span> <span class="pre">None'</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">instrument</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="s"><span class="pre">'str'</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'AIA'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">response_sav</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="s"><span class="pre">'str</span> <span class="pre">|</span> <span class="pre">Path</span> <span class="pre">|</span> <span class="pre">None'</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">omp_threads</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="s"><span class="pre">'int'</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">8</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">geometry</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="s"><span class="pre">'MapGeometry</span> <span class="pre">|</span> <span class="pre">None'</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">observer</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="s"><span class="pre">'ObserverOverrides</span> <span class="pre">|</span> <span class="pre">None'</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save_outputs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="s"><span class="pre">'bool'</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">write_preview</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="s"><span class="pre">'bool'</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="s"><span class="pre">'bool'</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gximagecomputing/sdk.html#EUVRenderOptions"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gximagecomputing.sdk.EUVRenderOptions" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>model_path</strong> (<em>str</em><em> | </em><em>Path</em>)</p></li>
+<li><p><strong>model_format</strong> (<em>Literal</em><em>[</em><em>'h5'</em><em>, </em><em>'sav'</em><em>, </em><em>'auto'</em><em>]</em>)</p></li>
+<li><p><strong>ebtel_path</strong> (<em>str</em><em> | </em><em>None</em>)</p></li>
+<li><p><strong>output_dir</strong> (<em>str</em><em> | </em><em>Path</em><em> | </em><em>None</em>)</p></li>
+<li><p><strong>output_name</strong> (<em>str</em><em> | </em><em>None</em>)</p></li>
+<li><p><strong>channels</strong> (<em>Sequence</em><em>[</em><em>str</em><em>] </em><em>| </em><em>None</em>)</p></li>
+<li><p><strong>instrument</strong> (<em>str</em>)</p></li>
+<li><p><strong>response_sav</strong> (<em>str</em><em> | </em><em>Path</em><em> | </em><em>None</em>)</p></li>
+<li><p><strong>omp_threads</strong> (<em>int</em>)</p></li>
+<li><p><strong>geometry</strong> (<a class="reference internal" href="#gximagecomputing.sdk.MapGeometry" title="gximagecomputing.sdk.MapGeometry"><em>MapGeometry</em></a><em> | </em><em>None</em>)</p></li>
+<li><p><strong>observer</strong> (<a class="reference internal" href="#gximagecomputing.sdk.ObserverOverrides" title="gximagecomputing.sdk.ObserverOverrides"><em>ObserverOverrides</em></a><em> | </em><em>None</em>)</p></li>
+<li><p><strong>save_outputs</strong> (<em>bool</em>)</p></li>
+<li><p><strong>write_preview</strong> (<em>bool</em>)</p></li>
+<li><p><strong>verbose</strong> (<em>bool</em>)</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="gximagecomputing.sdk.EUVRenderOptions.model_path">
+<span class="sig-name descname"><span class="pre">model_path</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Path</span></span><a class="headerlink" href="#gximagecomputing.sdk.EUVRenderOptions.model_path" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="gximagecomputing.sdk.EUVRenderOptions.model_format">
+<span class="sig-name descname"><span class="pre">model_format</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Literal</span><span class="p"><span class="pre">[</span></span><span class="s"><span class="pre">'h5'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'sav'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'auto'</span></span><span class="p"><span class="pre">]</span></span></span><a class="headerlink" href="#gximagecomputing.sdk.EUVRenderOptions.model_format" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="gximagecomputing.sdk.EUVRenderOptions.ebtel_path">
+<span class="sig-name descname"><span class="pre">ebtel_path</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><a class="headerlink" href="#gximagecomputing.sdk.EUVRenderOptions.ebtel_path" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="gximagecomputing.sdk.EUVRenderOptions.output_dir">
+<span class="sig-name descname"><span class="pre">output_dir</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Path</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><a class="headerlink" href="#gximagecomputing.sdk.EUVRenderOptions.output_dir" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="gximagecomputing.sdk.EUVRenderOptions.output_name">
+<span class="sig-name descname"><span class="pre">output_name</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><a class="headerlink" href="#gximagecomputing.sdk.EUVRenderOptions.output_name" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="gximagecomputing.sdk.EUVRenderOptions.channels">
+<span class="sig-name descname"><span class="pre">channels</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Sequence</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><a class="headerlink" href="#gximagecomputing.sdk.EUVRenderOptions.channels" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="gximagecomputing.sdk.EUVRenderOptions.instrument">
+<span class="sig-name descname"><span class="pre">instrument</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></span><a class="headerlink" href="#gximagecomputing.sdk.EUVRenderOptions.instrument" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="gximagecomputing.sdk.EUVRenderOptions.response_sav">
+<span class="sig-name descname"><span class="pre">response_sav</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Path</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><a class="headerlink" href="#gximagecomputing.sdk.EUVRenderOptions.response_sav" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="gximagecomputing.sdk.EUVRenderOptions.omp_threads">
+<span class="sig-name descname"><span class="pre">omp_threads</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></span><a class="headerlink" href="#gximagecomputing.sdk.EUVRenderOptions.omp_threads" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="gximagecomputing.sdk.EUVRenderOptions.geometry">
+<span class="sig-name descname"><span class="pre">geometry</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#gximagecomputing.sdk.MapGeometry" title="gximagecomputing.sdk.MapGeometry"><span class="pre">MapGeometry</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><a class="headerlink" href="#gximagecomputing.sdk.EUVRenderOptions.geometry" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="gximagecomputing.sdk.EUVRenderOptions.observer">
+<span class="sig-name descname"><span class="pre">observer</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#gximagecomputing.sdk.ObserverOverrides" title="gximagecomputing.sdk.ObserverOverrides"><span class="pre">ObserverOverrides</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><a class="headerlink" href="#gximagecomputing.sdk.EUVRenderOptions.observer" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="gximagecomputing.sdk.EUVRenderOptions.save_outputs">
+<span class="sig-name descname"><span class="pre">save_outputs</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></span><a class="headerlink" href="#gximagecomputing.sdk.EUVRenderOptions.save_outputs" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="gximagecomputing.sdk.EUVRenderOptions.write_preview">
+<span class="sig-name descname"><span class="pre">write_preview</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></span><a class="headerlink" href="#gximagecomputing.sdk.EUVRenderOptions.write_preview" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="gximagecomputing.sdk.EUVRenderOptions.verbose">
+<span class="sig-name descname"><span class="pre">verbose</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></span><a class="headerlink" href="#gximagecomputing.sdk.EUVRenderOptions.verbose" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="gximagecomputing.sdk.RenderGeometryInfo">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">gximagecomputing.sdk.</span></span><span class="sig-name descname"><span class="pre">RenderGeometryInfo</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">xc_arcsec</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="s"><span class="pre">'float'</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">yc_arcsec</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="s"><span class="pre">'float'</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dx_arcsec</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="s"><span class="pre">'float'</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dy_arcsec</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="s"><span class="pre">'float'</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nx</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="s"><span class="pre">'int'</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ny</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="s"><span class="pre">'int'</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fov_x_arcsec</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="s"><span class="pre">'float'</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fov_y_arcsec</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="s"><span class="pre">'float'</span></span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gximagecomputing/sdk.html#RenderGeometryInfo"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gximagecomputing.sdk.RenderGeometryInfo" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>xc_arcsec</strong> (<em>float</em>)</p></li>
+<li><p><strong>yc_arcsec</strong> (<em>float</em>)</p></li>
+<li><p><strong>dx_arcsec</strong> (<em>float</em>)</p></li>
+<li><p><strong>dy_arcsec</strong> (<em>float</em>)</p></li>
+<li><p><strong>nx</strong> (<em>int</em>)</p></li>
+<li><p><strong>ny</strong> (<em>int</em>)</p></li>
+<li><p><strong>fov_x_arcsec</strong> (<em>float</em>)</p></li>
+<li><p><strong>fov_y_arcsec</strong> (<em>float</em>)</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="gximagecomputing.sdk.RenderGeometryInfo.xc_arcsec">
+<span class="sig-name descname"><span class="pre">xc_arcsec</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span></span><a class="headerlink" href="#gximagecomputing.sdk.RenderGeometryInfo.xc_arcsec" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="gximagecomputing.sdk.RenderGeometryInfo.yc_arcsec">
+<span class="sig-name descname"><span class="pre">yc_arcsec</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span></span><a class="headerlink" href="#gximagecomputing.sdk.RenderGeometryInfo.yc_arcsec" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="gximagecomputing.sdk.RenderGeometryInfo.dx_arcsec">
+<span class="sig-name descname"><span class="pre">dx_arcsec</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span></span><a class="headerlink" href="#gximagecomputing.sdk.RenderGeometryInfo.dx_arcsec" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="gximagecomputing.sdk.RenderGeometryInfo.dy_arcsec">
+<span class="sig-name descname"><span class="pre">dy_arcsec</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span></span><a class="headerlink" href="#gximagecomputing.sdk.RenderGeometryInfo.dy_arcsec" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="gximagecomputing.sdk.RenderGeometryInfo.nx">
+<span class="sig-name descname"><span class="pre">nx</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></span><a class="headerlink" href="#gximagecomputing.sdk.RenderGeometryInfo.nx" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="gximagecomputing.sdk.RenderGeometryInfo.ny">
+<span class="sig-name descname"><span class="pre">ny</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></span><a class="headerlink" href="#gximagecomputing.sdk.RenderGeometryInfo.ny" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="gximagecomputing.sdk.RenderGeometryInfo.fov_x_arcsec">
+<span class="sig-name descname"><span class="pre">fov_x_arcsec</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span></span><a class="headerlink" href="#gximagecomputing.sdk.RenderGeometryInfo.fov_x_arcsec" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="gximagecomputing.sdk.RenderGeometryInfo.fov_y_arcsec">
+<span class="sig-name descname"><span class="pre">fov_y_arcsec</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span></span><a class="headerlink" href="#gximagecomputing.sdk.RenderGeometryInfo.fov_y_arcsec" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="gximagecomputing.sdk.MWOutputFiles">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">gximagecomputing.sdk.</span></span><span class="sig-name descname"><span class="pre">MWOutputFiles</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">output_dir</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="s"><span class="pre">'Path'</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save_outputs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="s"><span class="pre">'bool'</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">write_preview</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="s"><span class="pre">'bool'</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">h5_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="s"><span class="pre">'Path</span> <span class="pre">|</span> <span class="pre">None'</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">preview_png</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="s"><span class="pre">'Path</span> <span class="pre">|</span> <span class="pre">None'</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fits_paths</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="s"><span class="pre">'list[Path]'</span></span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gximagecomputing/sdk.html#MWOutputFiles"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gximagecomputing.sdk.MWOutputFiles" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>output_dir</strong> (<em>Path</em>)</p></li>
+<li><p><strong>save_outputs</strong> (<em>bool</em>)</p></li>
+<li><p><strong>write_preview</strong> (<em>bool</em>)</p></li>
+<li><p><strong>h5_path</strong> (<em>Path</em><em> | </em><em>None</em>)</p></li>
+<li><p><strong>preview_png</strong> (<em>Path</em><em> | </em><em>None</em>)</p></li>
+<li><p><strong>fits_paths</strong> (<em>list</em><em>[</em><em>Path</em><em>]</em>)</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="gximagecomputing.sdk.MWOutputFiles.output_dir">
+<span class="sig-name descname"><span class="pre">output_dir</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Path</span></span><a class="headerlink" href="#gximagecomputing.sdk.MWOutputFiles.output_dir" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="gximagecomputing.sdk.MWOutputFiles.save_outputs">
+<span class="sig-name descname"><span class="pre">save_outputs</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></span><a class="headerlink" href="#gximagecomputing.sdk.MWOutputFiles.save_outputs" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="gximagecomputing.sdk.MWOutputFiles.write_preview">
+<span class="sig-name descname"><span class="pre">write_preview</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></span><a class="headerlink" href="#gximagecomputing.sdk.MWOutputFiles.write_preview" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="gximagecomputing.sdk.MWOutputFiles.h5_path">
+<span class="sig-name descname"><span class="pre">h5_path</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Path</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><a class="headerlink" href="#gximagecomputing.sdk.MWOutputFiles.h5_path" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="gximagecomputing.sdk.MWOutputFiles.preview_png">
+<span class="sig-name descname"><span class="pre">preview_png</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Path</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><a class="headerlink" href="#gximagecomputing.sdk.MWOutputFiles.preview_png" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="gximagecomputing.sdk.MWOutputFiles.fits_paths">
+<span class="sig-name descname"><span class="pre">fits_paths</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">Path</span><span class="p"><span class="pre">]</span></span></span><a class="headerlink" href="#gximagecomputing.sdk.MWOutputFiles.fits_paths" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="gximagecomputing.sdk.EUVOutputFiles">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">gximagecomputing.sdk.</span></span><span class="sig-name descname"><span class="pre">EUVOutputFiles</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">output_dir</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="s"><span class="pre">'Path'</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save_outputs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="s"><span class="pre">'bool'</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">write_preview</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="s"><span class="pre">'bool'</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">h5_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="s"><span class="pre">'Path</span> <span class="pre">|</span> <span class="pre">None'</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">preview_png</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="s"><span class="pre">'Path</span> <span class="pre">|</span> <span class="pre">None'</span></span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gximagecomputing/sdk.html#EUVOutputFiles"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gximagecomputing.sdk.EUVOutputFiles" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>output_dir</strong> (<em>Path</em>)</p></li>
+<li><p><strong>save_outputs</strong> (<em>bool</em>)</p></li>
+<li><p><strong>write_preview</strong> (<em>bool</em>)</p></li>
+<li><p><strong>h5_path</strong> (<em>Path</em><em> | </em><em>None</em>)</p></li>
+<li><p><strong>preview_png</strong> (<em>Path</em><em> | </em><em>None</em>)</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="gximagecomputing.sdk.EUVOutputFiles.output_dir">
+<span class="sig-name descname"><span class="pre">output_dir</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Path</span></span><a class="headerlink" href="#gximagecomputing.sdk.EUVOutputFiles.output_dir" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="gximagecomputing.sdk.EUVOutputFiles.save_outputs">
+<span class="sig-name descname"><span class="pre">save_outputs</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></span><a class="headerlink" href="#gximagecomputing.sdk.EUVOutputFiles.save_outputs" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="gximagecomputing.sdk.EUVOutputFiles.write_preview">
+<span class="sig-name descname"><span class="pre">write_preview</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></span><a class="headerlink" href="#gximagecomputing.sdk.EUVOutputFiles.write_preview" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="gximagecomputing.sdk.EUVOutputFiles.h5_path">
+<span class="sig-name descname"><span class="pre">h5_path</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Path</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><a class="headerlink" href="#gximagecomputing.sdk.EUVOutputFiles.h5_path" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="gximagecomputing.sdk.EUVOutputFiles.preview_png">
+<span class="sig-name descname"><span class="pre">preview_png</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Path</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><a class="headerlink" href="#gximagecomputing.sdk.EUVOutputFiles.preview_png" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="gximagecomputing.sdk.EUVResponseInfo">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">gximagecomputing.sdk.</span></span><span class="sig-name descname"><span class="pre">EUVResponseInfo</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">instrument</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="s"><span class="pre">'str'</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">channels</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="s"><span class="pre">'list[str]'</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">source</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="s"><span class="pre">'str'</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mode</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="s"><span class="pre">'str'</span></span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gximagecomputing/sdk.html#EUVResponseInfo"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gximagecomputing.sdk.EUVResponseInfo" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>instrument</strong> (<em>str</em>)</p></li>
+<li><p><strong>channels</strong> (<em>list</em><em>[</em><em>str</em><em>]</em>)</p></li>
+<li><p><strong>source</strong> (<em>str</em>)</p></li>
+<li><p><strong>mode</strong> (<em>str</em>)</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="gximagecomputing.sdk.EUVResponseInfo.instrument">
+<span class="sig-name descname"><span class="pre">instrument</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></span><a class="headerlink" href="#gximagecomputing.sdk.EUVResponseInfo.instrument" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="gximagecomputing.sdk.EUVResponseInfo.channels">
+<span class="sig-name descname"><span class="pre">channels</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><a class="headerlink" href="#gximagecomputing.sdk.EUVResponseInfo.channels" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="gximagecomputing.sdk.EUVResponseInfo.source">
+<span class="sig-name descname"><span class="pre">source</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></span><a class="headerlink" href="#gximagecomputing.sdk.EUVResponseInfo.source" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="gximagecomputing.sdk.EUVResponseInfo.mode">
+<span class="sig-name descname"><span class="pre">mode</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></span><a class="headerlink" href="#gximagecomputing.sdk.EUVResponseInfo.mode" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="gximagecomputing.sdk.MWRenderResult">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">gximagecomputing.sdk.</span></span><span class="sig-name descname"><span class="pre">MWRenderResult</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">library_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="s"><span class="pre">'str'</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="s"><span class="pre">'Path'</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model_format</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="s"><span class="pre">'str'</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ebtel_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="s"><span class="pre">'str'</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">observer_overrides_applied</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="s"><span class="pre">'dict[str,</span> <span class="pre">float]'</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">center_source</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="s"><span class="pre">'str'</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">geometry</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="s"><span class="pre">'RenderGeometryInfo'</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">obs_time_iso</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="s"><span class="pre">'str'</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">freqlist_ghz</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="s"><span class="pre">'list[float]'</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ti</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="s"><span class="pre">'np.ndarray'</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tv</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="s"><span class="pre">'np.ndarray'</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">outputs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="s"><span class="pre">'MWOutputFiles'</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">raw_result</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="s"><span class="pre">'dict[str,</span> <span class="pre">Any]'</span></span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gximagecomputing/sdk.html#MWRenderResult"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gximagecomputing.sdk.MWRenderResult" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>library_path</strong> (<em>str</em>)</p></li>
+<li><p><strong>model_path</strong> (<em>Path</em>)</p></li>
+<li><p><strong>model_format</strong> (<em>str</em>)</p></li>
+<li><p><strong>ebtel_path</strong> (<em>str</em>)</p></li>
+<li><p><strong>observer_overrides_applied</strong> (<em>dict</em><em>[</em><em>str</em><em>, </em><em>float</em><em>]</em>)</p></li>
+<li><p><strong>center_source</strong> (<em>str</em>)</p></li>
+<li><p><strong>geometry</strong> (<a class="reference internal" href="#gximagecomputing.sdk.RenderGeometryInfo" title="gximagecomputing.sdk.RenderGeometryInfo"><em>RenderGeometryInfo</em></a>)</p></li>
+<li><p><strong>obs_time_iso</strong> (<em>str</em>)</p></li>
+<li><p><strong>freqlist_ghz</strong> (<em>list</em><em>[</em><em>float</em><em>]</em>)</p></li>
+<li><p><strong>ti</strong> (<em>ndarray</em>)</p></li>
+<li><p><strong>tv</strong> (<em>ndarray</em>)</p></li>
+<li><p><strong>outputs</strong> (<a class="reference internal" href="#gximagecomputing.sdk.MWOutputFiles" title="gximagecomputing.sdk.MWOutputFiles"><em>MWOutputFiles</em></a>)</p></li>
+<li><p><strong>raw_result</strong> (<em>dict</em><em>[</em><em>str</em><em>, </em><em>Any</em><em>]</em>)</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="gximagecomputing.sdk.MWRenderResult.library_path">
+<span class="sig-name descname"><span class="pre">library_path</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></span><a class="headerlink" href="#gximagecomputing.sdk.MWRenderResult.library_path" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="gximagecomputing.sdk.MWRenderResult.model_path">
+<span class="sig-name descname"><span class="pre">model_path</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Path</span></span><a class="headerlink" href="#gximagecomputing.sdk.MWRenderResult.model_path" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="gximagecomputing.sdk.MWRenderResult.model_format">
+<span class="sig-name descname"><span class="pre">model_format</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></span><a class="headerlink" href="#gximagecomputing.sdk.MWRenderResult.model_format" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="gximagecomputing.sdk.MWRenderResult.ebtel_path">
+<span class="sig-name descname"><span class="pre">ebtel_path</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></span><a class="headerlink" href="#gximagecomputing.sdk.MWRenderResult.ebtel_path" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="gximagecomputing.sdk.MWRenderResult.observer_overrides_applied">
+<span class="sig-name descname"><span class="pre">observer_overrides_applied</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span><a class="headerlink" href="#gximagecomputing.sdk.MWRenderResult.observer_overrides_applied" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="gximagecomputing.sdk.MWRenderResult.center_source">
+<span class="sig-name descname"><span class="pre">center_source</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></span><a class="headerlink" href="#gximagecomputing.sdk.MWRenderResult.center_source" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="gximagecomputing.sdk.MWRenderResult.geometry">
+<span class="sig-name descname"><span class="pre">geometry</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#gximagecomputing.sdk.RenderGeometryInfo" title="gximagecomputing.sdk.RenderGeometryInfo"><span class="pre">RenderGeometryInfo</span></a></span><a class="headerlink" href="#gximagecomputing.sdk.MWRenderResult.geometry" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="gximagecomputing.sdk.MWRenderResult.obs_time_iso">
+<span class="sig-name descname"><span class="pre">obs_time_iso</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></span><a class="headerlink" href="#gximagecomputing.sdk.MWRenderResult.obs_time_iso" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="gximagecomputing.sdk.MWRenderResult.freqlist_ghz">
+<span class="sig-name descname"><span class="pre">freqlist_ghz</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span><a class="headerlink" href="#gximagecomputing.sdk.MWRenderResult.freqlist_ghz" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="gximagecomputing.sdk.MWRenderResult.ti">
+<span class="sig-name descname"><span class="pre">ti</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ndarray</span></span><a class="headerlink" href="#gximagecomputing.sdk.MWRenderResult.ti" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="gximagecomputing.sdk.MWRenderResult.tv">
+<span class="sig-name descname"><span class="pre">tv</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ndarray</span></span><a class="headerlink" href="#gximagecomputing.sdk.MWRenderResult.tv" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="gximagecomputing.sdk.MWRenderResult.outputs">
+<span class="sig-name descname"><span class="pre">outputs</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#gximagecomputing.sdk.MWOutputFiles" title="gximagecomputing.sdk.MWOutputFiles"><span class="pre">MWOutputFiles</span></a></span><a class="headerlink" href="#gximagecomputing.sdk.MWRenderResult.outputs" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="gximagecomputing.sdk.MWRenderResult.raw_result">
+<span class="sig-name descname"><span class="pre">raw_result</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span><a class="headerlink" href="#gximagecomputing.sdk.MWRenderResult.raw_result" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="gximagecomputing.sdk.EUVRenderResult">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">gximagecomputing.sdk.</span></span><span class="sig-name descname"><span class="pre">EUVRenderResult</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">library_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="s"><span class="pre">'str'</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="s"><span class="pre">'Path'</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model_format</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="s"><span class="pre">'str'</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ebtel_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="s"><span class="pre">'str'</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">observer_overrides_applied</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="s"><span class="pre">'dict[str,</span> <span class="pre">float]'</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">center_source</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="s"><span class="pre">'str'</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">geometry</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="s"><span class="pre">'RenderGeometryInfo'</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">obs_time_iso</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="s"><span class="pre">'str'</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">response</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="s"><span class="pre">'EUVResponseInfo'</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">flux_corona</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="s"><span class="pre">'np.ndarray'</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">flux_tr</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="s"><span class="pre">'np.ndarray'</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">outputs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="s"><span class="pre">'EUVOutputFiles'</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">raw_result</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="s"><span class="pre">'dict[str,</span> <span class="pre">Any]'</span></span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gximagecomputing/sdk.html#EUVRenderResult"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gximagecomputing.sdk.EUVRenderResult" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>library_path</strong> (<em>str</em>)</p></li>
+<li><p><strong>model_path</strong> (<em>Path</em>)</p></li>
+<li><p><strong>model_format</strong> (<em>str</em>)</p></li>
+<li><p><strong>ebtel_path</strong> (<em>str</em>)</p></li>
+<li><p><strong>observer_overrides_applied</strong> (<em>dict</em><em>[</em><em>str</em><em>, </em><em>float</em><em>]</em>)</p></li>
+<li><p><strong>center_source</strong> (<em>str</em>)</p></li>
+<li><p><strong>geometry</strong> (<a class="reference internal" href="#gximagecomputing.sdk.RenderGeometryInfo" title="gximagecomputing.sdk.RenderGeometryInfo"><em>RenderGeometryInfo</em></a>)</p></li>
+<li><p><strong>obs_time_iso</strong> (<em>str</em>)</p></li>
+<li><p><strong>response</strong> (<a class="reference internal" href="#gximagecomputing.sdk.EUVResponseInfo" title="gximagecomputing.sdk.EUVResponseInfo"><em>EUVResponseInfo</em></a>)</p></li>
+<li><p><strong>flux_corona</strong> (<em>ndarray</em>)</p></li>
+<li><p><strong>flux_tr</strong> (<em>ndarray</em>)</p></li>
+<li><p><strong>outputs</strong> (<a class="reference internal" href="#gximagecomputing.sdk.EUVOutputFiles" title="gximagecomputing.sdk.EUVOutputFiles"><em>EUVOutputFiles</em></a>)</p></li>
+<li><p><strong>raw_result</strong> (<em>dict</em><em>[</em><em>str</em><em>, </em><em>Any</em><em>]</em>)</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="gximagecomputing.sdk.EUVRenderResult.library_path">
+<span class="sig-name descname"><span class="pre">library_path</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></span><a class="headerlink" href="#gximagecomputing.sdk.EUVRenderResult.library_path" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="gximagecomputing.sdk.EUVRenderResult.model_path">
+<span class="sig-name descname"><span class="pre">model_path</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Path</span></span><a class="headerlink" href="#gximagecomputing.sdk.EUVRenderResult.model_path" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="gximagecomputing.sdk.EUVRenderResult.model_format">
+<span class="sig-name descname"><span class="pre">model_format</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></span><a class="headerlink" href="#gximagecomputing.sdk.EUVRenderResult.model_format" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="gximagecomputing.sdk.EUVRenderResult.ebtel_path">
+<span class="sig-name descname"><span class="pre">ebtel_path</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></span><a class="headerlink" href="#gximagecomputing.sdk.EUVRenderResult.ebtel_path" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="gximagecomputing.sdk.EUVRenderResult.observer_overrides_applied">
+<span class="sig-name descname"><span class="pre">observer_overrides_applied</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span><a class="headerlink" href="#gximagecomputing.sdk.EUVRenderResult.observer_overrides_applied" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="gximagecomputing.sdk.EUVRenderResult.center_source">
+<span class="sig-name descname"><span class="pre">center_source</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></span><a class="headerlink" href="#gximagecomputing.sdk.EUVRenderResult.center_source" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="gximagecomputing.sdk.EUVRenderResult.geometry">
+<span class="sig-name descname"><span class="pre">geometry</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#gximagecomputing.sdk.RenderGeometryInfo" title="gximagecomputing.sdk.RenderGeometryInfo"><span class="pre">RenderGeometryInfo</span></a></span><a class="headerlink" href="#gximagecomputing.sdk.EUVRenderResult.geometry" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="gximagecomputing.sdk.EUVRenderResult.obs_time_iso">
+<span class="sig-name descname"><span class="pre">obs_time_iso</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></span><a class="headerlink" href="#gximagecomputing.sdk.EUVRenderResult.obs_time_iso" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="gximagecomputing.sdk.EUVRenderResult.response">
+<span class="sig-name descname"><span class="pre">response</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#gximagecomputing.sdk.EUVResponseInfo" title="gximagecomputing.sdk.EUVResponseInfo"><span class="pre">EUVResponseInfo</span></a></span><a class="headerlink" href="#gximagecomputing.sdk.EUVRenderResult.response" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="gximagecomputing.sdk.EUVRenderResult.flux_corona">
+<span class="sig-name descname"><span class="pre">flux_corona</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ndarray</span></span><a class="headerlink" href="#gximagecomputing.sdk.EUVRenderResult.flux_corona" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="gximagecomputing.sdk.EUVRenderResult.flux_tr">
+<span class="sig-name descname"><span class="pre">flux_tr</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ndarray</span></span><a class="headerlink" href="#gximagecomputing.sdk.EUVRenderResult.flux_tr" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="gximagecomputing.sdk.EUVRenderResult.outputs">
+<span class="sig-name descname"><span class="pre">outputs</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#gximagecomputing.sdk.EUVOutputFiles" title="gximagecomputing.sdk.EUVOutputFiles"><span class="pre">EUVOutputFiles</span></a></span><a class="headerlink" href="#gximagecomputing.sdk.EUVRenderResult.outputs" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="gximagecomputing.sdk.EUVRenderResult.raw_result">
+<span class="sig-name descname"><span class="pre">raw_result</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span><a class="headerlink" href="#gximagecomputing.sdk.EUVRenderResult.raw_result" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="gximagecomputing.sdk.render_mw_maps">
+<span class="sig-prename descclassname"><span class="pre">gximagecomputing.sdk.</span></span><span class="sig-name descname"><span class="pre">render_mw_maps</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">options</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gximagecomputing/sdk.html#render_mw_maps"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gximagecomputing.sdk.render_mw_maps" title="Link to this definition"></a></dt>
+<dd><p>Render microwave maps programmatically without argparse/CLI overhead.</p>
+<p>Returns a typed <cite>MWRenderResult</cite>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>options</strong> (<a class="reference internal" href="#gximagecomputing.sdk.MWRenderOptions" title="gximagecomputing.sdk.MWRenderOptions"><em>MWRenderOptions</em></a>)</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="#gximagecomputing.sdk.MWRenderResult" title="gximagecomputing.sdk.MWRenderResult"><em>MWRenderResult</em></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="gximagecomputing.sdk.render_euv_maps">
+<span class="sig-prename descclassname"><span class="pre">gximagecomputing.sdk.</span></span><span class="sig-name descname"><span class="pre">render_euv_maps</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">options</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gximagecomputing/sdk.html#render_euv_maps"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gximagecomputing.sdk.render_euv_maps" title="Link to this definition"></a></dt>
+<dd><p>Render EUV maps programmatically without argparse/CLI overhead.</p>
+<p>Returns a typed <cite>EUVRenderResult</cite>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>options</strong> (<a class="reference internal" href="#gximagecomputing.sdk.EUVRenderOptions" title="gximagecomputing.sdk.EUVRenderOptions"><em>EUVRenderOptions</em></a>)</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="#gximagecomputing.sdk.EUVRenderResult" title="gximagecomputing.sdk.EUVRenderResult"><em>EUVRenderResult</em></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="examples.html" class="btn btn-neutral float-left" title="Examples Layout" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="cli_api.html" class="btn btn-neutral float-right" title="CLI Workflow Modules" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2026, suncast-org.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
