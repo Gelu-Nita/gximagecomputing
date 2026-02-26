@@ -1,11 +1,12 @@
 pro RenderExampleEUV, MODelfile=modelfile, EBTELfile=ebtelfile, RESPonsefile=responsefile, LIBname=libname, $
                     INSTRument=instrument, DSUN=dsun_kw, LONC=lonc_kw, B0SUN=b0sun_kw, $
                     XC=xc, YC=yc, DX=dx, DY=dy, NX=nx, NY=ny, $
-                    OUTfile=outfile, NO_PLOT=no_plot
+                    OUTfile=outfile, NO_PLOT=no_plot, _extra=_extra
 
  exdir=file_dirname(routine_filepath('RenderExampleEUV'))
- local_idlcodedir=file_dirname(exdir)+'/idlcode'
- local_bindir=file_dirname(exdir)+'/binaries'
+ repo_root=file_dirname(file_dirname(exdir))
+ local_idlcodedir=repo_root+'/idlcode'
+ local_bindir=repo_root+'/binaries'
  env_ebtel=getenv('GXIMAGECOMPUTING_EBTEL_PATH')
 
  if n_elements(modelfile) eq 0 then begin
@@ -132,13 +133,13 @@ pro RenderExampleEUV, MODelfile=modelfile, EBTELfile=ebtelfile, RESPonsefile=res
   wset, 1
   loadct, 13, /silent
   m=mapCorona.getmap(2)
-  plot_map, m, cbar=1
+  plot_map, m, cbar=1,_extra=_extra
 
   window, 2, title='EUV map (TR)'
   wset, 2
   loadct, 13, /silent
   m=mapTR.getmap(2)
-  plot_map, m, cbar=1
+  plot_map, m, cbar=1,_extra=_extra
 
   window, 3, title='EUV map (corona + TR)'
   wset, 3
@@ -146,6 +147,6 @@ pro RenderExampleEUV, MODelfile=modelfile, EBTELfile=ebtelfile, RESPonsefile=res
   m=mapCorona.getmap(2)
   mtr=mapTR.getmap(2)
   m.data+=mtr.data
-  plot_map, m, cbar=1
+  plot_map, m, cbar=1,_extra=_extra
  endif
 end

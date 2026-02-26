@@ -3,14 +3,15 @@ pro RenderExampleMW, MODelfile=modelfile, EBTELfile=ebtelfile, LIBname=libname, 
                    OUTdir=outdir, OUTfile=outfile, $
                    DSUN=dsun_kw, LONC=lonc_kw, B0SUN=b0sun_kw, $
                    XC=xc, YC=yc, DX=dx, DY=dy, NX=nx, NY=ny, XRANGE=xrange, YRANGE=yrange, $
-                   NO_PLOT=no_plot
+                   NO_PLOT=no_plot,_extra=_extra
 
  ; Temporary validation workflow:
  ; - Accept CHR SAV or H5 path directly.
  ; - Save output in same tmp folder used by Python comparisons by default.
  exdir=file_dirname(routine_filepath('RenderExampleMW'))
- local_idlcodedir=file_dirname(exdir)+'/idlcode'
- local_bindir=file_dirname(exdir)+'/binaries'
+ repo_root=file_dirname(file_dirname(exdir))
+ local_idlcodedir=repo_root+'/idlcode'
+ local_bindir=repo_root+'/binaries'
  env_ebtel=getenv('GXIMAGECOMPUTING_EBTEL_PATH')
 
  if n_elements(modelfile) eq 0 then begin
@@ -190,13 +191,13 @@ pro RenderExampleMW, MODelfile=modelfile, EBTELfile=ebtelfile, LIBname=libname, 
    wset, 1
    loadct, 13, /silent
    m=map.getmap(0)
-   plot_map, m, cbar=1
+   plot_map, m, cbar=1,_extra=_extra
 
    window, 2, title='IDL MW V'
    wset, 2
    loadct, 33, /silent
    m=map.getmap(n_elements(freqlist))
-   plot_map, m, cbar=1
+   plot_map, m, cbar=1,_extra=_extra
  endif
 
  ; Save only output maps in a single container: first I maps, then V maps.
